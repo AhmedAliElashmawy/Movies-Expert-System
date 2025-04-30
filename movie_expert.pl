@@ -55,28 +55,39 @@ ask_pref(director, Director) :-
     assert(asked(user, director, Director)).
 
 ask_pref(actors, Actors) :-
-    write('What are your favorite actors? '),
+    write('Who are your favorite actors? (Enter as list [actor1, actor2] or single actor) '),
     read(Actors),
     assert(asked(user, actors, Actors)).
+
 ask_pref(genre, Genre) :-
-    write('What is your favorite genre? '),
+    write('What are your favorite genres? (Enter as list [genre1, genre2] or single genre) '),
     read(Genre),
     assert(asked(user, genre, Genre)).
+
 ask_pref(language, Language) :- 
-    write('What is your favorite language? '),
+    write('What is your preferred language? '),
     read(Language),
     assert(asked(user, language, Language)).
+
 ask_pref(age_rating, AgeRating) :-
-    write('What is your favorite age rating? '),
+    write('What is your preferred age rating? (G, PG, PG-13, R) '),
     read(AgeRating),
     assert(asked(user, age_rating, AgeRating)).
+
 ask_pref(year, Year) :-
-    write('What is your favorite year? '),
-    read(Year),
+    write('What is your preferred release year? (Enter a number) '),
+    read(YearInput),
+    (number(YearInput) -> 
+        Year = YearInput ; 
+        write('Invalid year. Using 2000 as default.'), nl, Year = 2000),
     assert(asked(user, year, Year)).
+
 ask_pref(imdb_rate, IMDBRate) :-
-    write('What is your favorite IMDB rating? '),
-    read(IMDBRate),
+    write('What is your minimum IMDB rating? (1-10) '),
+    read(RatingInput),
+    (number(RatingInput) -> 
+        IMDBRate = RatingInput ; 
+        write('Invalid rating. Using 7.0 as default.'), nl, IMDBRate = 7.0),
     assert(asked(user, imdb_rate, IMDBRate)).
 
 % --- Rules ---
@@ -90,45 +101,54 @@ ask() :-
     ask_pref(imdb_rate, _).
 
 % Modified to use partial matches with a scoring system
-likes_movie(User, Movie, Score) :-
+likes_movie(Movie, Score) :-
     movie(Movie, Director, Actors, Genre, Language, AgeRating, Year, IMDBRate),
-    Score is 0
-        + (asked(User, director, Director) -> 3 ; 0)
-        + (member_match(User, actors, Actors) -> 2 ; 0)
-        + (member_match(User, genre, Genre) -> 2 ; 0)
-        + (asked(User, language, Language) -> 1 ; 0)
-        + (asked(User, age_rating, AgeRating) -> 1 ; 0)
-        + (year_close(User, Year) -> 1 ; 0)
-        + (rating_close(User, IMDBRate) -> 1 ; 0),
-    Score > 2. % At least some matches
+    (asked(user, director, UserDirector) -> true ; UserDirector = ''),
+    (asked(user, actors, UserActors) -> true ; UserActors = []),
+    (asked(user, genre, UserGenre) -> true ; UserGenre = []),
+    (asked(user, language, UserLanguage) -> true ; UserLanguage = ''),
+    (asked(user, age_rating, UserRating) -> true ; UserRating = ''),
+    (asked(user, year, UserYear) -> true ; UserYear = 2000),
+    (asked(user, imdb_rate, UserIMDB) -> true ; UserIMDB = 7.0),
 
-% Helper predicates
-member_match(User, Type, List) :-
-    asked(User, Type, UserPref),
-    (is_list(UserPref) -> 
-        (member(Item, UserPref), member(Item, List)) ; 
-        member(UserPref, List)).
+    (UserDirector == Director -> DirectorScore = 3 ; DirectorScore = 0),
+    (actors_match(UserActors, Actors) -> ActorScore = 2 ; ActorScore = 0),
+    (genre_match(UserGenre, Genre) -> GenreScore = 2 ; GenreScore = 0),
+    (UserLanguage == Language -> LanguageScore = 1 ; LanguageScore = 0),
+    (UserRating == AgeRating -> RatingScore = 1 ; RatingScore = 0),
+    (abs(UserYear - Year) =< 3 -> YearScore = 1 ; YearScore = 0),
+    (IMDBRate >= UserIMDB -> IMDBScore = 1 ; IMDBScore = 0),
 
-year_close(User, Year) :-
-    asked(User, year, UserYear),
-    abs(UserYear - Year) =< 3.
+    Score is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore + IMDBScore,
+    Score > 2.
+% Safer helper predicates
+actors_match(UserActors, MovieActors) :-
+    UserActors \= [],
+    (is_list(UserActors) -> 
+        member(Actor, UserActors), member(Actor, MovieActors) ; 
+        member(UserActors, MovieActors)).
 
-rating_close(User, Rating) :-
-    asked(User, imdb_rate, UserRating),
-    abs(UserRating - Rating) =< 1.
+genre_match(UserGenre, MovieGenre) :-
+    UserGenre \= [],
+    (is_list(UserGenre) -> 
+        member(GenreItem, UserGenre), member(GenreItem, MovieGenre) ; 
+        member(UserGenre, MovieGenre)).
+    
 
 % --- Main predicate ---
 recommind :-
-    retractall(asked(_, _, _)), % Clear previous preferences
+    retractall(asked(_, _, _)),
     write('Welcome to the Movie Recommender!'), nl,
     write('Please answer the following questions to get your movie recommendations.'), nl,
-    write('For actors and genres, you can enter a list like [actor1, actor2] or [genre1, genre2]'), nl,
+    write('For actors and genres, you can enter a list like [actor1, actor2]'), nl,
     ask(),
     write('Here are your recommended movies:'), nl,
-    findall(Movie-Score, likes_movie(user, Movie, Score), ScoredMovies),
+    findall(Movie-Score, likes_movie(Movie, Score), ScoredMovies),
     sort(2, @>=, ScoredMovies, SortedMovies),
-    (SortedMovies = [] -> write('No movies found matching your preferences.') ;
-        write_movies(SortedMovies)).
+    (SortedMovies = [] -> 
+        write('No movies found matching your preferences.') ;
+        write_movies(SortedMovies)
+    ).
     
 % Helper predicate to display movies list with scores
 write_movies([]) :- !.
