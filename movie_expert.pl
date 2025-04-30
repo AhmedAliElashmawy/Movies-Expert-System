@@ -1,0 +1,52 @@
+% --- Facts ---
+
+% movie(Name,Director,Actors, Genre, Language, AgeRating, Year, IMDBrate).
+movie('The Shawshank Redemption', 'Frank Darabont', ['Tim Robbins', 'Morgan Freeman'], ['Drama', 'Crime'], 'English', 'R', 1994, 9.3).
+movie('Schindler\'s List', 'Steven Spielberg', ['Liam Neeson', 'Ben Kingsley'], ['Biography', 'History'], 'English', 'R', 1993, 8.9).
+movie('Forrest Gump', 'Robert Zemeckis', ['Tom Hanks', 'Robin Wright'], ['Drama', 'Comedy'], 'English', 'PG-13', 1994, 8.8).
+movie('Inception', 'Christopher Nolan', ['Leonardo DiCaprio', 'Joseph Gordon-Levitt'], ['Action', 'Sci-Fi'], 'English', 'PG-13', 2010, 8.8).
+movie('Fight Club', 'David Fincher', ['Brad Pitt', 'Edward Norton'], ['Drama', 'Thriller'], 'English', 'R', 1999, 8.8).
+movie('The Matrix', 'Lana Wachowski', ['Keanu Reeves', 'Laurence Fishburne'], ['Action', 'Sci-Fi'], 'English', 'R', 1999, 8.7).
+movie('Goodfellas', 'Martin Scorsese', ['Ray Liotta', 'Robert De Niro'], ['Crime', 'Biography'], 'English', 'R', 1990, 8.7).
+movie('Saving Private Ryan', 'Steven Spielberg', ['Tom Hanks', 'Matt Damon'], ['Drama', 'War'], 'English', 'R', 1998, 8.6).
+movie('The Usual Suspects', 'Bryan Singer', ['Kevin Spacey', 'Gabriel Byrne'], ['Crime', 'Mystery'], 'English', 'R', 1995, 8.5).
+movie('Se7en', 'David Fincher', ['Morgan Freeman', 'Brad Pitt'], ['Crime', 'Thriller'], 'English', 'R', 1995, 8.6).
+movie('Interstellar', 'Christopher Nolan', ['Matthew McConaughey', 'Anne Hathaway'], ['Adventure', 'Sci-Fi'], 'English', 'PG-13', 2014, 8.6).
+movie('The Departed', 'Martin Scorsese', ['Leonardo DiCaprio', 'Matt Damon'], ['Crime', 'Thriller'], 'English', 'R', 2006, 8.5).
+movie('The Prestige', 'Christopher Nolan', ['Hugh Jackman', 'Christian Bale'], ['Drama', 'Mystery'], 'English', 'PG-13', 2006, 8.5).
+movie('The Lion King', 'Roger Allers', ['Matthew Broderick', 'James Earl Jones'], ['Animation', 'Adventure'], 'English', 'G', 1994, 8.5).
+movie('Django Unchained', 'Quentin Tarantino', ['Jamie Foxx', 'Christoph Waltz'], ['Western', 'Drama'], 'English', 'R', 2012, 8.4).
+movie('Collateral', 'Michael Mann', ['Tom Cruise', 'Jamie Foxx'], ['Action', 'Thriller'], 'English', 'R', 2004, 7.5).
+movie('Edge of Tomorrow', 'Doug Liman', ['Tom Cruise', 'Emily Blunt'], ['Action', 'Sci-Fi'], 'English', 'PG-13', 2014, 7.9).
+movie('Wall-E', 'Andrew Stanton', ['Ben Burtt', 'Elissa Knight'], ['Animation', 'Adventure'], 'English', 'G', 2008, 8.4).
+movie('Your Name', 'Makoto Shinkai', ['Ryunosuke Kamiki', 'Mone Kamishiraishi'], ['Animation', 'Romance'], 'Japanese', 'PG', 2016, 8.9).
+movie('Spirited Away', 'Hayao Miyazaki', ['Rumi Hiiragi', 'Miyu Irino'], ['Animation', 'Fantasy'], 'Japanese', 'PG', 2001, 8.6).
+movie('Grave of the Fireflies', 'Isao Takahata', ['Tsutomu Tatsumi', 'Ayano Shiraishi'], ['Animation', 'War'], 'Japanese', 'PG', 1988, 8.5).
+movie('Akira', 'Katsuhiro Otomo', ['Mitsuo Iwata', 'Nozomu Sasaki'], ['Animation', 'Sci-Fi'], 'Japanese', 'R', 1988, 8.0).
+movie('V for Vendetta', 'James McTeigue', ['Hugo Weaving', 'Natalie Portman'], ['Action', 'Drama'], 'English', 'R', 2005, 8.2).
+movie('Shutter Island', 'Martin Scorsese', ['Leonardo DiCaprio', 'Mark Ruffalo'], ['Mystery', 'Thriller'], 'English', 'R', 2010, 8.2).
+movie('Prisoners', 'Denis Villeneuve', ['Hugh Jackman', 'Jake Gyllenhaal'], ['Crime', 'Drama'], 'English', 'R', 2013, 8.1).
+movie('The Wolf of Wall Street', 'Martin Scorsese', ['Leonardo DiCaprio', 'Jonah Hill'], ['Biography', 'Comedy'], 'English', 'R', 2013, 8.2).
+movie('War of the Worlds', 'Steven Spielberg', ['Tom Cruise', 'Dakota Fanning'], ['Action', 'Adventure'], 'English', 'PG-13', 2005, 6.5).
+movie('Ratatouille', 'Brad Bird', ['Patton Oswalt', 'Lou Romano'], ['Animation', 'Comedy'], 'English', 'G', 2007, 8.0).
+movie('Titanic', 'James Cameron', ['Leonardo DiCaprio', 'Kate Winslet'], ['Drama', 'Romance'], 'English', 'PG-13', 1997, 7.8).
+movie('Blade Runner 2049', 'Denis Villeneuve', ['Ryan Gosling', 'Harrison Ford'], ['Drama', 'Mystery'], 'English', 'R', 2017, 8.0).
+movie('House of Flying Daggers', 'Zhang Yimou', ['Takeshi Kaneshiro', 'Andy Lau'], ['Action', 'Drama'], 'Chinese', 'R', 2004, 7.5).
+movie('Hero', 'Zhang Yimou', ['Jet Li', 'Tony Leung Chiu Wai'], ['Action', 'Drama'], 'Chinese', 'PG-13', 2002, 7.9).
+movie('Pan\'s Labyrinth', 'Guillermo del Toro', ['Ivana Baquero', 'Sergi López'], ['Fantasy', 'Drama'], 'Spanish', 'R', 2006, 8.2).
+movie('The Secret in Their Eyes', 'Juan José Campanella', ['Ricardo Darín', 'Soledad Villamil'], ['Drama', 'Mystery'], 'Spanish', 'R', 2009, 8.2).
+movie('I want to Eat Your Pancreas', 'Shinichirō Ushijima', ['Mahiro Takasugi', 'Tsubasa Honda'], ['Animation', 'Drama'], 'Japanese', 'PG-13', 2018, 8.6).
+movie('Asal Eswed', 'Sameh Abdulaziz', ['Ahmed Helmy', 'Nelly Karim'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2010, 7.5).
+movie('Saeidi fe ElGamaah  ElAmriciyah', 'Said Hamed', ['Mohamed Henedy', 'Ahmed El-Sakka'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 1998, 7.5).
+movie('El-Limby', 'Sherif Arafa', ['Mohamed Saad', 'Ola Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2002, 7.5).
+movie('Malaki Eskenderia', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2005, 7.5).
+movie('Masgoon Transit', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2007, 7.5).
+movie('El-Khalia', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2008, 7.5).
+movie('El-Basha Telmiz', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2009, 7.5).
+movie('Tatah', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2010, 7.5).
+movie('El-Limby 8 Giga', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2011, 7.5).
+
+% --- Dynamic storage for user preferences ---
+:- dynamic(asked/3).
+
+
