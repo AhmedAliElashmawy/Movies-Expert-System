@@ -1,7 +1,7 @@
 % --- Facts ---
 
 % movie(Name,Director,Actors, Genre, Language, AgeRating, Year, IMDBrate).
-movie('The Shawshank Redemption', 'Frank Darabont', ['Tim Robbins', 'Morgan Freeman'], ['Drama', 'Crime'], 'English', 'R', 1994, 9.3).
+movie('The Shawshank Redemption', 'Frank Darabont', ['Tim Robbins', 'Morgan Freeman'], ['Drama', 'Crime'], 'English', 'R', 1994, 9).
 movie('Schindler\'s List', 'Steven Spielberg', ['Liam Neeson', 'Ben Kingsley'], ['Biography', 'History'], 'English', 'R', 1993, 8.9).
 movie('Forrest Gump', 'Robert Zemeckis', ['Tom Hanks', 'Robin Wright'], ['Drama', 'Comedy'], 'English', 'PG-13', 1994, 8.8).
 movie('Inception', 'Christopher Nolan', ['Leonardo DiCaprio', 'Joseph Gordon-Levitt'], ['Action', 'Sci-Fi'], 'English', 'PG-13', 2010, 8.8).
@@ -48,5 +48,92 @@ movie('El-Limby 8 Giga', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem']
 
 % --- Dynamic storage for user preferences ---
 :- dynamic(asked/3).
+
+ask_pref(director, Director) :-
+    write('What is your favorite director? '),
+    read(Director),
+    assert(asked(user, director, Director)).
+
+ask_pref(actors, Actors) :-
+    write('What are your favorite actors? '),
+    read(Actors),
+    assert(asked(user, actors, Actors)).
+ask_pref(genre, Genre) :-
+    write('What is your favorite genre? '),
+    read(Genre),
+    assert(asked(user, genre, Genre)).
+ask_pref(language, Language) :- 
+    write('What is your favorite language? '),
+    read(Language),
+    assert(asked(user, language, Language)).
+ask_pref(age_rating, AgeRating) :-
+    write('What is your favorite age rating? '),
+    read(AgeRating),
+    assert(asked(user, age_rating, AgeRating)).
+ask_pref(year, Year) :-
+    write('What is your favorite year? '),
+    read(Year),
+    assert(asked(user, year, Year)).
+ask_pref(imdb_rate, IMDBRate) :-
+    write('What is your favorite IMDB rating? '),
+    read(IMDBRate),
+    assert(asked(user, imdb_rate, IMDBRate)).
+
+% --- Rules ---
+ask() :-
+    ask_pref(director, _),
+    ask_pref(actors, _),
+    ask_pref(genre, _),
+    ask_pref(language, _),
+    ask_pref(age_rating, _),
+    ask_pref(year, _),
+    ask_pref(imdb_rate, _).
+
+% Modified to use partial matches with a scoring system
+likes_movie(User, Movie, Score) :-
+    movie(Movie, Director, Actors, Genre, Language, AgeRating, Year, IMDBRate),
+    Score is 0
+        + (asked(User, director, Director) -> 3 ; 0)
+        + (member_match(User, actors, Actors) -> 2 ; 0)
+        + (member_match(User, genre, Genre) -> 2 ; 0)
+        + (asked(User, language, Language) -> 1 ; 0)
+        + (asked(User, age_rating, AgeRating) -> 1 ; 0)
+        + (year_close(User, Year) -> 1 ; 0)
+        + (rating_close(User, IMDBRate) -> 1 ; 0),
+    Score > 2. % At least some matches
+
+% Helper predicates
+member_match(User, Type, List) :-
+    asked(User, Type, UserPref),
+    (is_list(UserPref) -> 
+        (member(Item, UserPref), member(Item, List)) ; 
+        member(UserPref, List)).
+
+year_close(User, Year) :-
+    asked(User, year, UserYear),
+    abs(UserYear - Year) =< 3.
+
+rating_close(User, Rating) :-
+    asked(User, imdb_rate, UserRating),
+    abs(UserRating - Rating) =< 1.
+
+% --- Main predicate ---
+recommind :-
+    retractall(asked(_, _, _)), % Clear previous preferences
+    write('Welcome to the Movie Recommender!'), nl,
+    write('Please answer the following questions to get your movie recommendations.'), nl,
+    write('For actors and genres, you can enter a list like [actor1, actor2] or [genre1, genre2]'), nl,
+    ask(),
+    write('Here are your recommended movies:'), nl,
+    findall(Movie-Score, likes_movie(user, Movie, Score), ScoredMovies),
+    sort(2, @>=, ScoredMovies, SortedMovies),
+    (SortedMovies = [] -> write('No movies found matching your preferences.') ;
+        write_movies(SortedMovies)).
+    
+% Helper predicate to display movies list with scores
+write_movies([]) :- !.
+write_movies([Movie-Score|Rest]) :-
+    write('- '), write(Movie), write(' (match score: '), write(Score), write(')'), nl,
+    write_movies(Rest).
 
 
