@@ -1,7 +1,7 @@
 % --- Facts ---
 
 % movie(Name,Director,Actors, Genre, Language, AgeRating, Year, IMDBrate).
-movie('The Shawshank Redemption', 'Frank Darabont', ['Tim Robbins', 'Morgan Freeman'], ['Drama', 'Crime'], 'English', 'R', 1994, 9).
+movie('The Shawshank Redemption', 'Frank Darabont', ['Tim Robbins', 'Morgan Freeman'], ['Drama', 'Crime'], 'English', 'R', 1994, 9.3).
 movie('Schindler\'s List', 'Steven Spielberg', ['Liam Neeson', 'Ben Kingsley'], ['Biography', 'History'], 'English', 'R', 1993, 8.9).
 movie('Forrest Gump', 'Robert Zemeckis', ['Tom Hanks', 'Robin Wright'], ['Drama', 'Comedy'], 'English', 'PG-13', 1994, 8.8).
 movie('Inception', 'Christopher Nolan', ['Leonardo DiCaprio', 'Joseph Gordon-Levitt'], ['Action', 'Sci-Fi'], 'English', 'PG-13', 2010, 8.8).
@@ -36,15 +36,28 @@ movie('Hero', 'Zhang Yimou', ['Jet Li', 'Tony Leung Chiu Wai'], ['Action', 'Dram
 movie('Pan\'s Labyrinth', 'Guillermo del Toro', ['Ivana Baquero', 'Sergi López'], ['Fantasy', 'Drama'], 'Spanish', 'R', 2006, 8.2).
 movie('The Secret in Their Eyes', 'Juan José Campanella', ['Ricardo Darín', 'Soledad Villamil'], ['Drama', 'Mystery'], 'Spanish', 'R', 2009, 8.2).
 movie('I want to Eat Your Pancreas', 'Shinichirō Ushijima', ['Mahiro Takasugi', 'Tsubasa Honda'], ['Animation', 'Drama'], 'Japanese', 'PG-13', 2018, 8.6).
-movie('Asal Eswed', 'Sameh Abdulaziz', ['Ahmed Helmy', 'Nelly Karim'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2010, 7.5).
-movie('Saeidi fe ElGamaah  ElAmriciyah', 'Said Hamed', ['Mohamed Henedy', 'Ahmed El-Sakka'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 1998, 7.5).
-movie('El-Limby', 'Sherif Arafa', ['Mohamed Saad', 'Ola Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2002, 7.5).
-movie('Malaki Eskenderia', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2005, 7.5).
-movie('Masgoon Transit', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2007, 7.5).
-movie('El-Khalia', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2008, 7.5).
-movie('El-Basha Telmiz', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2009, 7.5).
-movie('Tatah', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2010, 7.5).
-movie('El-Limby 8 Giga', 'Ismail Farouk', ['Mohamed Saad', 'Donia Samir Ghanem'], ['Comedy', 'Drama'], 'Arabic', 'PG-13', 2011, 7.5).
+movie('Assal Eswed', 'Khaled Marei', ['Ahmed Helmy', 'Edward'], ['Comedy', 'Drama'], 'Arabic', 'G', 2010, 8.0).
+movie('Sa\'eedi fil gamaa el amrekeia', 'Said Hamed', ['Mohamed Henedy', 'Ahmed El-Sakka'], ['Comedy', 'Drama'], 'Arabic', 'PG', 1998, 7.0).
+movie('El-Limby', 'Wael Ihsan', ['Mohamed Saad', 'Abla Kamel'], ['Comedy'], 'Arabic', 'PG', 2002, 6.5).
+movie('Mallaki Iskandariya', 'Sandra Nashaat', ['Ahmed Ezz','Ghadah Adel'], ['Crime', 'Drama'], 'Arabic', 'PG-13', 2005, 7.1).
+movie('Masgoon Tranzait', 'Sandra Nashaat', ['Ahmed Ezz', 'Nour El-Sherif'], ['Adventure', 'Drama'], 'Arabic', 'PG-13', 2008, 6.5).
+movie('El-Khaliyyah', 'Tarek Alarian', ['Ahmed Ezz', 'Mohamed Mamdouh'], ['Action', 'Drama'], 'Arabic', 'PG-13', 2017, 6.3).
+movie('El-Basha Tilmeez', 'Wael Ihsan', ['Hassan Hosny','Ghadah Adel','Karim Abdel Aziz'], ['Comedy', 'Action'], 'Arabic', 'PG', 2004, 6.4).
+movie('Tattah', 'Sameh Abdulaziz', ['Mohamed Saad', 'Omar Metwally'], ['Comedy', 'Drama'], 'Arabic', 'PG', 2013, 4.4).
+movie('El-Limbi 8 Giga', 'Ashraf Fayeq', ['Mohamed Saad', 'Mai Ezz Eldin'], ['Comedy', 'Drama'], 'Arabic', 'PG', 2010, 5.1).
+movie('THE BeeKeeper', 'David Ayer', ['Jason Statham', 'Jessica Alba'], ['Action', 'Thriller'], 'English', 'R', 2024, 6.3).
+movie('Taxi Driver', 'Martin Scorsese', ['Robert De Niro', 'Jodie Foster'], ['Drama', 'Crime'], 'English', 'R', 1976, 8.2).
+movie('Lucy', 'Luc Besson', ['Scarlett Johansson', 'Morgan Freeman','Amr Waked'], ['Action', 'Sci-Fi'], 'English', 'R', 2014, 6.4).
+movie('Cast Away', 'Robert Zemeckis', ['Tom Hanks', 'Helen Hunt'], ['Drama', 'Adventure'], 'English', 'PG-13', 2000, 7.8).
+movie('Unknown', 'Jaume Collet-Serra', ['Liam Neeson', 'Diane Kruger'], ['Action', 'Thriller'], 'English', 'PG-13', 2011, 6.8).
+movie('Snatch', 'Guy Ritchie', ['Jason Statham', 'Brad Pitt'], ['Comedy', 'Crime'], 'English', 'R', 2000, 8.2).
+movie('Speed', 'Jan de Bont', ['Keanu Reeves', 'Sandra Bullock'], ['Action', 'Thriller'], 'English', 'R', 1994, 7.2).
+movie('The Irishman', 'Martin Scorsese', ['Robert De Niro', 'Al Pacino'], ['Biography', 'Crime'], 'English', 'R', 2019, 7.8).
+movie('Joker', 'Todd Phillips', ['Joaquin Phoenix', 'Robert De Niro'], ['Crime', 'Drama'], 'English', 'R', 2019, 8.3).
+movie('Logan', 'James Mangold', ['Hugh Jackman', 'Patrick Stewart'], ['Action', 'Drama'], 'English', 'R', 2017, 8.1).
+movie('The Adam Project', 'Shawn Levy', ['Ryan Reynolds', 'Mark Ruffalo'], ['Action', 'Adventure'], 'English', 'PG-13', 2022, 6.7).
+movie('Red Notice', 'Rawson Marshall Thurber', ['Dwayne Johnson', 'Ryan Reynolds'], ['Action', 'Comedy'], 'English', 'PG-13', 2021, 6.3).
+movie('6 Underground', 'Michael Bay', ['Ryan Reynolds', 'Melanie Laurent'], ['Action', 'Adventure'], 'English', 'R', 2019, 6.1).
 
 % --- Dynamic storage for user preferences ---
 :- dynamic(asked/3).
@@ -100,7 +113,7 @@ ask() :-
     ask_pref(year, _),
     ask_pref(imdb_rate, _).
 
-% Modified to use partial matches with a scoring system
+% use partial matches with a scoring system and handle skipped attributes
 likes_movie(Movie, Score) :-
     movie(Movie, Director, Actors, Genre, Language, AgeRating, Year, IMDBRate),
     (asked(user, director, UserDirector) -> true ; UserDirector = ''),
@@ -111,16 +124,36 @@ likes_movie(Movie, Score) :-
     (asked(user, year, UserYear) -> true ; UserYear = 2000),
     (asked(user, imdb_rate, UserIMDB) -> true ; UserIMDB = 7.0),
 
-    (UserDirector == Director -> DirectorScore = 3 ; DirectorScore = 0),
-    (actors_match(UserActors, Actors) -> ActorScore = 2 ; ActorScore = 0),
-    (genre_match(UserGenre, Genre) -> GenreScore = 2 ; GenreScore = 0),
-    (UserLanguage == Language -> LanguageScore = 1 ; LanguageScore = 0),
-    (UserRating == AgeRating -> RatingScore = 1 ; RatingScore = 0),
-    (abs(UserYear - Year) =< 3 -> YearScore = 1 ; YearScore = 0),
-    (IMDBRate >= UserIMDB -> IMDBScore = 1 ; IMDBScore = 0),
+
+    (UserDirector == '' -> DirectorScore = 1 ; 
+     UserDirector == Director -> DirectorScore = 1 ; 
+     DirectorScore = 0),
+    
+    (UserActors == [] ; UserActors == '' -> ActorScore = 2 ; 
+     actors_match(UserActors, Actors) -> ActorScore = 2 ; 
+     ActorScore = 0),
+
+    (UserGenre == [] ; UserGenre == '' -> GenreScore = 3 ; 
+     genre_match(UserGenre, Genre) -> GenreScore = 3 ; 
+     GenreScore = 0),
+
+    (UserLanguage == '' -> LanguageScore = 1 ; 
+     UserLanguage == Language -> LanguageScore = 1 ; 
+     LanguageScore = -5),
+
+    (UserRating == '' -> RatingScore = 1 ; 
+     UserRating == AgeRating -> RatingScore = 1 ; 
+     RatingScore = 0),
+
+    (abs(UserYear - Year) =< 3 -> YearScore = 1 ; 
+     YearScore = 0),
+
+    (IMDBRate >= UserIMDB -> IMDBScore = 1 ; 
+     IMDBScore = -5),
 
     Score is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore + IMDBScore,
-    Score > 2.
+    Score >= 5. % Minimum score to recommend a movie
+
 % Safer helper predicates
 actors_match(UserActors, MovieActors) :-
     UserActors \= [],
@@ -139,7 +172,7 @@ genre_match(UserGenre, MovieGenre) :-
 recommind :-
     retractall(asked(_, _, _)),
     write('Welcome to the Movie Recommender!'), nl,
-    write('Please answer the following questions to get your movie recommendations.'), nl,
+    write('Please answer the following questions to get your movie recommendations write \'\' to skip this question.'), nl,
     write('For actors and genres, you can enter a list like [actor1, actor2]'), nl,
     ask(),
     write('Here are your recommended movies:'), nl,
@@ -155,5 +188,26 @@ write_movies([]) :- !.
 write_movies([Movie-Score|Rest]) :-
     write('- '), write(Movie), write(' (match score: '), write(Score), write(')'), nl,
     write_movies(Rest).
+
+% display_movie(MovieName) - Shows all information about a specific movie
+display_movie(MovieName) :-
+    movie(MovieName, Director, Actors, Genres, Language, AgeRating, Year, IMDBRate),
+    nl,
+    write('Title: '), write(MovieName),nl,
+    write('Director: '), write(Director),nl,
+    write('Actors: '), write_list(Actors),nl,
+    write('Genres: '), write_list(Genres),nl,
+    write('Language: '), write(Language),nl,
+    write('Age Rating: '), write(AgeRating),nl,
+    write('Release Year: '), write(Year),nl,
+    write('IMDB Rating: '), write(IMDBRate),
+    nl.
+
+% Helper predicate to display lists neatly
+write_list([]) :- !.
+write_list([Item]) :- write(Item), !.
+write_list([Item|Rest]) :-
+    write(Item), write(', '),
+    write_list(Rest).
 
 
