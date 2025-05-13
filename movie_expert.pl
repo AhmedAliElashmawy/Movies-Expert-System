@@ -169,7 +169,7 @@ genre_match(UserGenre, MovieGenre) :-
     
 
 % --- Main predicate ---
-recommind :-
+recommend :-
     retractall(asked(_, _, _)),
     write('Welcome to the Movie Recommender!'), nl,
     write('Please answer the following questions to get your movie recommendations write \'\' to skip this question.'), nl,
