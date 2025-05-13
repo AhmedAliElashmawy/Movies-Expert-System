@@ -11,6 +11,8 @@ import sys
 class PreferenceGUI(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.prolog = Prolog()
+        self.prolog.consult('movie_expert.pl')
         self.imdb_rating_buttons = None
         self.imdb_rating_layout = None
         self.submit_button = None
@@ -26,8 +28,7 @@ class PreferenceGUI(QMainWindow):
         self.gif_label = None
         self.setWindowTitle("Movie Preferences")
         self.imdb_rating = None
-        self.prolog = Prolog()
-        self.prolog.consult('movie_expert.pl')
+
 
         self.setMaximumSize(800, 1000)
 
@@ -192,19 +193,15 @@ class PreferenceGUI(QMainWindow):
             QMessageBox.warning(self, "Empty field Rating", "Invalid rating!")
             return
 
-        # Clearing any old preferences
-        self.prolog.query("retractall(asked(_, _, _))")
-
-
         # Assert user preferences
 
-        self.prolog.assertz(f"asked(user, director, '{director}')")  # Director input
-        self.prolog.assertz(f"asked(user, actors, {actors})")  # Actors input as list
-        self.prolog.assertz(f"asked(user, genre, {genre})")  # Genre input as list
-        self.prolog.assertz(f"asked(user, language, '{language}')")  # Language input
-        self.prolog.assertz(f"asked(user, age_rating, '{age_rating}')")  # Age rating input
-        self.prolog.assertz(f"asked(user, year, {year})")  # Year input as number
-        self.prolog.assertz(f"asked(user, imdb_rate, {self.imdb_rating})")  # IMDb rating input as number
+        self.prolog.asserta(f"asked(user, director, '{director}')")  # Director input
+        self.prolog.asserta(f"asked(user, actors, {actors})")  # Actors input as list
+        self.prolog.asserta(f"asked(user, genre, {genre})")  # Genre input as list
+        self.prolog.asserta(f"asked(user, language, '{language}')")  # Language input
+        self.prolog.asserta(f"asked(user, age_rating, '{age_rating}')")  # Age rating input
+        self.prolog.asserta(f"asked(user, year, {year})")  # Year input as number
+        self.prolog.asserta(f"asked(user, imdb_rate, {self.imdb_rating})")  # IMDb rating input as number
 
         # Update GUI with confirmation
         print("Saved preferences to Prolog.")
@@ -212,8 +209,7 @@ class PreferenceGUI(QMainWindow):
         # Query the Prolog for recommendations based on user preferences
 
         result = list(self.prolog.query("likes_movie(Movie, Score)"))
-        # After querying:
-        self.prolog.query("retractall(asked(_, _, _))")
+
 
         if result:
             # Sort the result by Score in descending order
