@@ -14,6 +14,8 @@ venv.bak/
 # VS Code
 .vscode/
 
+pyqt-env/
+
 # PyCharm
 .idea/
 
@@ -39,10 +41,6 @@ build/
 *.pyd
 *.qrc
 *.ui~
-
-# Project-specific
-down_arrow.png
-movie theater GIF by James Curran.gif
 
 # PySWIP build cache (if built from source)
 pyswip/*.so
