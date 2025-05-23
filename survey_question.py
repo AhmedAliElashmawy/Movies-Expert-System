@@ -107,10 +107,9 @@ class PreferenceGUI(QMainWindow):
         for rating in self.age_ratings:
             self.age_rating_input.addItem(rating, rating)
 
-        self.year_input = QComboBox()
-        self.year_input.addItem("", "")  # Empty option to skip
-        for year in self.years:
-            self.year_input.addItem(str(year), year)
+        self.year_input = QLineEdit()
+        # self.year_input.setPlaceholderText("Enter a year (e.g., 2000)")
+        self.year_input.setMaxLength(4)
 
         # IMDB rating buttons layout
         self.imdb_rating_layout = QHBoxLayout()
@@ -141,24 +140,51 @@ class PreferenceGUI(QMainWindow):
         # Common style for all dropdowns
         dropdown_style = """
             QComboBox {
-                background-color: rgba(255, 255, 255, 0.85);
-                border: 1px solid #2E1A47;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 14px;
-                color: #1A1A40;
-                min-width: 200px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid #2E1A47;
+            border-radius: 6px;
+            padding: 6px;
+            font-size: 14px;
+            color: #1A1A40;
+            min-width: 200px;
             }
             QComboBox:hover {
-                border: 1px solid #9D7AF0;
+            border: 1px solid #9D7AF0;
             }
             QComboBox::drop-down {
-                subcontrol-origin: padding;
-                subcontrol-position: top right;
-                width: 20px;
-                border-left: 1px solid #2E1A47;
-                border-top-right-radius: 6px;
-                border-bottom-right-radius: 6px;
+            subcontrol-origin: padding;
+            subcontrol-position: top right;
+            width: 20px;
+            border-left: 1px solid #2E1A47;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            }
+            QComboBox::down-arrow {
+            image: url(down_arrow.png);
+            width: 12px;
+            height: 12px;
+            }
+            QComboBox::down-arrow:on {
+            top: 1px;
+            left: 1px;
+            }
+        """
+
+        # Style for the input fields
+        input_style = """
+            QLineEdit {
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid #2E1A47;
+            border-radius: 6px;
+            padding: 6px;
+            font-size: 14px;
+            color: #1A1A40;
+            }
+            QLineEdit:focus {
+            border: 1px solid #9D7AF0;
+            }
+            QLineEdit::placeholder {
+            color: #A9A9A9;
             }
         """
 
@@ -168,7 +194,7 @@ class PreferenceGUI(QMainWindow):
         self.genre_input.setStyleSheet(dropdown_style)
         self.language_input.setStyleSheet(dropdown_style)
         self.age_rating_input.setStyleSheet(dropdown_style)
-        self.year_input.setStyleSheet(dropdown_style)
+        self.year_input.setStyleSheet(input_style)
 
         # Add form inputs to the layout
         self.layout.addRow("Favourite Director:", self.director_input)
@@ -215,7 +241,7 @@ class PreferenceGUI(QMainWindow):
         genre = self.genre_input.currentData()   # Single genre from dropdown
         language = self.language_input.currentData()
         age_rating = self.age_rating_input.currentData()
-        year = self.year_input.currentData()
+        year = self.year_input.text()
 
         # Handle empty selections
         if not director:
@@ -289,9 +315,12 @@ class PreferenceGUI(QMainWindow):
     def set_imdb_rating(self, value):
         self.imdb_rating = value
 
-
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     gui = PreferenceGUI()
     gui.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
