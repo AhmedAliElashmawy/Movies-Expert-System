@@ -1,3 +1,5 @@
+import random
+
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import (
@@ -27,6 +29,9 @@ class PreferenceGUI(QMainWindow):
         self.movie = None
         self.gif_label = None
         self.setWindowTitle("Movie Preferences")
+        self.gender_input = None
+        self.duration_input = None
+        self.awards_input = None
         self.imdb_rating = None
 
         # Fetch distinct values from Prolog
@@ -36,6 +41,10 @@ class PreferenceGUI(QMainWindow):
         self.languages = self.get_prolog_values('language')
         self.age_ratings = self.get_prolog_values('age_rating')
         self.years = sorted(self.get_prolog_values('year'))
+        self.gender = self.get_prolog_values('lead_gender')
+        self.duration = ["1h-1.5h", "1.5h-2h", "2h-3h", ">3h"]
+        self.awards = self.get_prolog_values('awards')
+
 
         self.setMaximumSize(800, 1000)
 
@@ -107,8 +116,23 @@ class PreferenceGUI(QMainWindow):
         for rating in self.age_ratings:
             self.age_rating_input.addItem(rating, rating)
 
+        self.duration_input = QComboBox()
+        self.duration_input.addItem("", "")  # Empty option to skip
+        for duration in self.duration:
+            self.duration_input.addItem(duration, duration)
+
+        self.awards_input = QComboBox()
+        self.awards_input.addItem("", "")  # Empty option to skip
+        for award in self.awards:
+            self.awards_input.addItem(award, award)
+
+        self.gender_input = QComboBox()
+        self.gender_input.addItem("", "")  # Empty option to skip
+        for gender in self.gender:
+            self.gender_input.addItem(gender, gender)
+
         self.year_input = QLineEdit()
-        # self.year_input.setPlaceholderText("Enter a year (e.g., 2000)")
+        self.year_input.setPlaceholderText("2000")
         self.year_input.setMaxLength(4)
 
         # IMDB rating buttons layout
@@ -135,6 +159,9 @@ class PreferenceGUI(QMainWindow):
             """)
             self.imdb_rating_buttons.addButton(btn, i)
             self.imdb_rating_layout.addWidget(btn)
+            if i == 7:
+                btn.setChecked(True)  # Make "7" appear selected
+                self.set_imdb_rating(7)
             self.imdb_rating_buttons.buttonClicked[int].connect(self.set_imdb_rating)
 
         # Common style for all dropdowns
@@ -189,20 +216,28 @@ class PreferenceGUI(QMainWindow):
         """
 
         # Apply style to each dropdown
+        self.gender_input.setStyleSheet(dropdown_style)
         self.director_input.setStyleSheet(dropdown_style)
         self.actors_input.setStyleSheet(dropdown_style)
         self.genre_input.setStyleSheet(dropdown_style)
         self.language_input.setStyleSheet(dropdown_style)
         self.age_rating_input.setStyleSheet(dropdown_style)
+        self.duration_input.setStyleSheet(dropdown_style)
+        self.awards_input.setStyleSheet(dropdown_style)
+
         self.year_input.setStyleSheet(input_style)
 
         # Add form inputs to the layout
+        self.layout.addRow("Movie Viewership by Gender:", self.gender_input)
         self.layout.addRow("Favourite Director:", self.director_input)
         self.layout.addRow("Favourite Actor:", self.actors_input)
         self.layout.addRow("Favourite Genre:", self.genre_input)
         self.layout.addRow("Preferred Language:", self.language_input)
         self.layout.addRow("Preferred Age Rating:", self.age_rating_input)
         self.layout.addRow("Preferred Year:", self.year_input)
+        self.layout.addRow("Duration:", self.duration_input)
+        self.layout.addRow("Number of Awards:", self.awards_input)
+
         # self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rate_input)
         self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rating_layout)
 
@@ -236,35 +271,67 @@ class PreferenceGUI(QMainWindow):
         self.layout.addRow("", self.submit_button)
 
     def submit_preferences(self):
+        gender = self.gender_input.currentData()
         director = self.director_input.currentData()
         actor = self.actors_input.currentData()  # Single actor from dropdown
         genre = self.genre_input.currentData()   # Single genre from dropdown
         language = self.language_input.currentData()
         age_rating = self.age_rating_input.currentData()
         year = self.year_input.text()
+        duration = self.duration_input.currentData()
+        min_duration = 60
+        max_duration = 300
+        awards = self.awards_input.currentData()
+
 
         # Handle empty selections
+
+        if not gender:
+            gender = "Both"
+
         if not director:
             director = ""
+
         if not actor:
-            actors_list = "[]"  # Empty list in Prolog syntax
+            random_actor = self.actors[random.randint(0, len(self.actors) - 1)]
+            actors_list = f"['{random_actor}']"
         else:
-            actors_list = f"['{actor}']"  # List with single actor
-            
+            actors_list = f"['{actor}']"
+
+        # For genres
         if not genre:
-            genres_list = "[]"  # Empty list in Prolog syntax
+            random_genre = self.genres[random.randint(0, len(self.genres) - 1)]
+            genres_list = f"['{random_genre}']"
         else:
-            genres_list = f"['{genre}']"  # List with single genre
+            genres_list = f"['{genre}']"
             
         if not language:
             language = ""
-            
+
         if not age_rating:
             age_rating = ""
             
         if not year:
             year = 2000
-            QMessageBox.warning(self, "Empty field", "Using 2000 as default year")
+
+        if not duration:
+            duration = ""
+
+        else:
+            if '-' in duration:  # e.g., "1h-1.5h"
+                parts = duration.replace('h', '').split('-')
+                min_duration = float(parts[0]) * 60
+                max_duration = float(parts[1]) * 60
+            elif duration.startswith('>'):
+                min_duration = 180
+                max_duration = 300
+
+            min_duration = int(min_duration)
+            max_duration = int(max_duration)
+
+
+        if not awards:
+            awards = 0
 
         if self.imdb_rating is not None:
             imdb = int(self.imdb_rating)
@@ -277,7 +344,6 @@ class PreferenceGUI(QMainWindow):
         self.prolog.retractall("asked(user, _, _)")
         
         # Assert user preferences
-
         self.prolog.asserta(f"asked(user, director, '{director}')")  # Director input
         self.prolog.asserta(f"asked(user, actors, {actors_list})")  # Actors input as list
         self.prolog.asserta(f"asked(user, genre, {genres_list})")  # Genre input as list
@@ -285,6 +351,11 @@ class PreferenceGUI(QMainWindow):
         self.prolog.asserta(f"asked(user, age_rating, '{age_rating}')")  # Age rating input
         self.prolog.asserta(f"asked(user, year, {year})")  # Year input as number
         self.prolog.asserta(f"asked(user, imdb_rate, {self.imdb_rating})")  # IMDb rating input as number
+        self.prolog.asserta(f"asked(user, lead_gender, {gender})")  # Year input as number
+        self.prolog.asserta(f"asked(user, min_duration, {min_duration})")  # Year input as number
+        self.prolog.asserta(f"asked(user, max_duration, {max_duration})")  # Year input as number
+        self.prolog.asserta(f"asked(user, awards, {awards})")  # Year input as number
+
 
         # Update GUI with confirmation
         print("Saved preferences to Prolog.")

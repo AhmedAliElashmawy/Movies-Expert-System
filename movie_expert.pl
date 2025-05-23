@@ -77,7 +77,7 @@ ask_pref(genre, Genre) :-
     read(Genre),
     assert(asked(user, genre, Genre)).
 
-ask_pref(language, Language) :- 
+ask_pref(language, Language) :-
     write('What is your preferred language? '),
     read(Language),
     assert(asked(user, language, Language)).
@@ -148,7 +148,7 @@ likes_movie(Movie, Score) :-
      UserRating == AgeRating -> RatingScore = 1 ; 
      RatingScore = 0),
 
-    (abs(UserYear - Year) =< 3 -> YearScore = 1 ; 
+    (abs(UserYear - Year) =< 10 -> YearScore = 1 ;
      YearScore = 0),
 
     (IMDBRate >= UserIMDB -> IMDBScore = 1 ; 
@@ -256,5 +256,13 @@ get_value_for_field(age_rating, AgeRating) :-
 get_value_for_field(year, Year) :-
     movie(_, _, _, _, _, _, Year, _, _, _, _).
 
+get_value_for_field(lead_gender, LeadGender) :-
+    movie(_, _, _, _, _, _, _, _, LeadGender, _, _).
+
+get_value_for_field(duration, Duration) :-
+    movie(_, _, _, _, _, _, _, _, _, Duration, _).
+
+get_value_for_field(awards, Awards) :-
+    movie(_, _, _, _, _, _, _, _, _, _, Awards).
 
 
