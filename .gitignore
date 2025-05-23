@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+env.bak/
+venv.bak/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and runtime
+*.log
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Prolog intermediate files
+*.qlf
+*.wam
+
+# Qt Designer UI compilation
+*.pyc
+*.pyo
+*.pyd
+*.qrc
+*.ui~
+
+# Project-specific
+down_arrow.png
+movie theater GIF by James Curran.gif
+
+# PySWIP build cache (if built from source)
+pyswip/*.so
+pyswip/*.dll
+pyswip/*.dylib
+
+# Testing
+.coverage
+htmlcov/
+pytest_cache/
