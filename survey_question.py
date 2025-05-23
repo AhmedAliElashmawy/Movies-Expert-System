@@ -2,7 +2,7 @@ from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QLabel, QMessageBox, QVBoxLayout, QMainWindow,
-    QSizePolicy, QHBoxLayout, QButtonGroup
+    QSizePolicy, QHBoxLayout, QButtonGroup, QComboBox
 )
 from pyswip import Prolog
 import sys
@@ -29,11 +29,30 @@ class PreferenceGUI(QMainWindow):
         self.setWindowTitle("Movie Preferences")
         self.imdb_rating = None
 
+        # Fetch distinct values from Prolog
+        self.directors = self.get_prolog_values('director')
+        self.actors = self.get_prolog_values('actor')
+        self.genres = self.get_prolog_values('genre')
+        self.languages = self.get_prolog_values('language')
+        self.age_ratings = self.get_prolog_values('age_rating')
+        self.years = sorted(self.get_prolog_values('year'))
 
         self.setMaximumSize(800, 1000)
 
         # Initialize the UI
         self.init_ui()
+
+    def get_prolog_values(self, field):
+        """Get distinct values for a field from Prolog"""
+        result = list(self.prolog.query(f"get_distinct_values({field}, Values)"))
+        if result:
+            # Extract values from the Prolog result
+            values = result[0]['Values']
+            # Convert from Prolog format if needed
+            if isinstance(values, list):
+                return [str(val) for val in values]
+            return [str(values)]
+        return []
 
     def init_ui(self):
         central_widget = QWidget()
@@ -62,14 +81,38 @@ class PreferenceGUI(QMainWindow):
         self.layout = QFormLayout()
         overlay_layout.addLayout(self.layout)
 
-        # Add your form inputs here, e.g.:
-        self.director_input = QLineEdit()
-        self.actors_input = QLineEdit()
-        self.genre_input = QLineEdit()
-        self.language_input = QLineEdit()
-        self.age_rating_input = QLineEdit()
-        self.year_input = QLineEdit()
-        # self.imdb_rate_input = QLineEdit()
+        # Create dropdown menus
+        self.director_input = QComboBox()
+        self.director_input.addItem("", "")  # Empty option to skip
+        for director in self.directors:
+            self.director_input.addItem(director, director)
+
+        self.actors_input = QComboBox()
+        self.actors_input.addItem("", "")  # Empty option to skip
+        for actor in self.actors:
+            self.actors_input.addItem(actor, actor)
+
+        self.genre_input = QComboBox()
+        self.genre_input.addItem("", "")  # Empty option to skip
+        for genre in self.genres:
+            self.genre_input.addItem(genre, genre)
+
+        self.language_input = QComboBox()
+        self.language_input.addItem("", "")  # Empty option to skip
+        for language in self.languages:
+            self.language_input.addItem(language, language)
+
+        self.age_rating_input = QComboBox()
+        self.age_rating_input.addItem("", "")  # Empty option to skip
+        for rating in self.age_ratings:
+            self.age_rating_input.addItem(rating, rating)
+
+        self.year_input = QComboBox()
+        self.year_input.addItem("", "")  # Empty option to skip
+        for year in self.years:
+            self.year_input.addItem(str(year), year)
+
+        # IMDB rating buttons layout
         self.imdb_rating_layout = QHBoxLayout()
         self.imdb_rating_buttons = QButtonGroup(self)
         self.imdb_rating_layout.setSpacing(0)
@@ -95,49 +138,48 @@ class PreferenceGUI(QMainWindow):
             self.imdb_rating_layout.addWidget(btn)
             self.imdb_rating_buttons.buttonClicked[int].connect(self.set_imdb_rating)
 
-        # Set placeholder texts
-        self.director_input.setPlaceholderText("e.g., Christopher Nolan")
-        self.actors_input.setPlaceholderText("e.g., Tom Hanks, Emma Stone")
-        self.genre_input.setPlaceholderText("e.g., Sci-Fi, Drama")
-        self.language_input.setPlaceholderText("e.g., English")
-        self.age_rating_input.setPlaceholderText("G, PG, PG-13, R")
-        self.year_input.setPlaceholderText("e.g., 2010 or 2015-2020")
-        # self.imdb_rate_input.setPlaceholderText("e.g., 7.5")
-
-        # Common style for all inputs
-        input_style = """
-            QLineEdit {
+        # Common style for all dropdowns
+        dropdown_style = """
+            QComboBox {
                 background-color: rgba(255, 255, 255, 0.85);
                 border: 1px solid #2E1A47;
                 border-radius: 6px;
                 padding: 6px;
                 font-size: 14px;
                 color: #1A1A40;
+                min-width: 200px;
             }
-            QLineEdit::placeholder {
-                color: #2E1A47;
-                font-style: italic;
+            QComboBox:hover {
+                border: 1px solid #9D7AF0;
+            }
+            QComboBox::drop-down {
+                subcontrol-origin: padding;
+                subcontrol-position: top right;
+                width: 20px;
+                border-left: 1px solid #2E1A47;
+                border-top-right-radius: 6px;
+                border-bottom-right-radius: 6px;
             }
         """
 
-        # Apply style to each input
-        self.director_input.setStyleSheet(input_style)
-        self.actors_input.setStyleSheet(input_style)
-        self.genre_input.setStyleSheet(input_style)
-        self.language_input.setStyleSheet(input_style)
-        self.age_rating_input.setStyleSheet(input_style)
-        self.year_input.setStyleSheet(input_style)
-        # self.imdb_rate_input.setStyleSheet(input_style)
+        # Apply style to each dropdown
+        self.director_input.setStyleSheet(dropdown_style)
+        self.actors_input.setStyleSheet(dropdown_style)
+        self.genre_input.setStyleSheet(dropdown_style)
+        self.language_input.setStyleSheet(dropdown_style)
+        self.age_rating_input.setStyleSheet(dropdown_style)
+        self.year_input.setStyleSheet(dropdown_style)
 
         # Add form inputs to the layout
         self.layout.addRow("Favourite Director:", self.director_input)
-        self.layout.addRow("Favourite Actors (list or single):", self.actors_input)
-        self.layout.addRow("Favourite Genres (list or single):", self.genre_input)
+        self.layout.addRow("Favourite Actor:", self.actors_input)
+        self.layout.addRow("Favourite Genre:", self.genre_input)
         self.layout.addRow("Preferred Language:", self.language_input)
-        self.layout.addRow("Preferred Age Rating (G, PG, PG-13, R):", self.age_rating_input)
+        self.layout.addRow("Preferred Age Rating:", self.age_rating_input)
         self.layout.addRow("Preferred Year:", self.year_input)
         # self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rate_input)
         self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rating_layout)
+
         # Add overlay widget with form to the main layout
         main_layout.addWidget(self.gif_label)
         main_layout.addWidget(overlay_widget)
@@ -168,36 +210,51 @@ class PreferenceGUI(QMainWindow):
         self.layout.addRow("", self.submit_button)
 
     def submit_preferences(self):
-        director = self.director_input.text()
-        actors = self.actors_input.text().split(',')  # Assuming comma-separated input for multiple actors
-        genre = self.genre_input.text().split(',')  # Assuming comma-separated input for multiple genres
-        language = self.language_input.text()
-        age_rating = self.age_rating_input.text()
+        director = self.director_input.currentData()
+        actor = self.actors_input.currentData()  # Single actor from dropdown
+        genre = self.genre_input.currentData()   # Single genre from dropdown
+        language = self.language_input.currentData()
+        age_rating = self.age_rating_input.currentData()
+        year = self.year_input.currentData()
 
-
-
-        year_text = self.year_input.text().strip()
-        if year_text:
-            try:
-                year = int(year_text)
-            except ValueError:
-                QMessageBox.warning(self, "Invalid Year", "Invalid year!")
-                return
+        # Handle empty selections
+        if not director:
+            director = ""
+        if not actor:
+            actors_list = "[]"  # Empty list in Prolog syntax
         else:
-            QMessageBox.warning(self, "Empty field", "Using 2000 as default year")
+            actors_list = f"['{actor}']"  # List with single actor
+            
+        if not genre:
+            genres_list = "[]"  # Empty list in Prolog syntax
+        else:
+            genres_list = f"['{genre}']"  # List with single genre
+            
+        if not language:
+            language = ""
+            
+        if not age_rating:
+            age_rating = ""
+            
+        if not year:
             year = 2000
+            QMessageBox.warning(self, "Empty field", "Using 2000 as default year")
 
         if self.imdb_rating is not None:
             imdb = int(self.imdb_rating)
+            self.prolog.asserta(f"asked(user, imdb_rate, {imdb})")
         else:
             QMessageBox.warning(self, "Empty field Rating", "Invalid rating!")
             return
 
+        # Clear existing preferences
+        self.prolog.retractall("asked(user, _, _)")
+        
         # Assert user preferences
 
         self.prolog.asserta(f"asked(user, director, '{director}')")  # Director input
-        self.prolog.asserta(f"asked(user, actors, {actors})")  # Actors input as list
-        self.prolog.asserta(f"asked(user, genre, {genre})")  # Genre input as list
+        self.prolog.asserta(f"asked(user, actors, {actors_list})")  # Actors input as list
+        self.prolog.asserta(f"asked(user, genre, {genres_list})")  # Genre input as list
         self.prolog.asserta(f"asked(user, language, '{language}')")  # Language input
         self.prolog.asserta(f"asked(user, age_rating, '{age_rating}')")  # Age rating input
         self.prolog.asserta(f"asked(user, year, {year})")  # Year input as number
@@ -216,10 +273,17 @@ class PreferenceGUI(QMainWindow):
             sorted_result = sorted(result, key=lambda x: x['Score'], reverse=True)
 
             # Display sorted recommendations
+            recommendations = "Recommended Movies:\n\n"
             for item in sorted_result:
-                print(f"Recommended Movie: {item['Movie']} with score: {item['Score']}")
+                movie_name = item['Movie']
+                score = item['Score']
+                recommendations += f"• {movie_name} (score: {score})\n"
+                print(f"Recommended Movie: {movie_name} with score: {score}")
+                
+            QMessageBox.information(self, "Recommendations", recommendations)
         else:
             # If no recommendations are found
+            QMessageBox.information(self, "No Results", "No movies match your preferences.")
             print("No movies match your preferences.")
 
     def set_imdb_rating(self, value):

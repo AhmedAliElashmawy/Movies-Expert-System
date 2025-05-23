@@ -33,14 +33,14 @@ movie('Titanic', 'James Cameron', ['Leonardo DiCaprio', 'Kate Winslet'], ['Drama
 movie('Blade Runner 2049', 'Denis Villeneuve', ['Ryan Gosling', 'Harrison Ford'], ['Drama', 'Mystery'], 'English', 'R', 2017, 8.0).
 movie('House of Flying Daggers', 'Zhang Yimou', ['Takeshi Kaneshiro', 'Andy Lau'], ['Action', 'Drama'], 'Chinese', 'R', 2004, 7.5).
 movie('Hero', 'Zhang Yimou', ['Jet Li', 'Tony Leung Chiu Wai'], ['Action', 'Drama'], 'Chinese', 'PG-13', 2002, 7.9).
-movie('Pan\'s Labyrinth', 'Guillermo del Toro', ['Ivana Baquero', 'Sergi López'], ['Fantasy', 'Drama'], 'Spanish', 'R', 2006, 8.2).
-movie('The Secret in Their Eyes', 'Juan José Campanella', ['Ricardo Darín', 'Soledad Villamil'], ['Drama', 'Mystery'], 'Spanish', 'R', 2009, 8.2).
-movie('I want to Eat Your Pancreas', 'Shinichirō Ushijima', ['Mahiro Takasugi', 'Tsubasa Honda'], ['Animation', 'Drama'], 'Japanese', 'PG-13', 2018, 8.6).
+movie('Pan\'s Labyrinth', 'Guillermo del Toro', ['Ivana Baquero', 'Sergi Lopez'], ['Fantasy', 'Drama'], 'Spanish', 'R', 2006, 8.2).
+movie('The Secret in Their Eyes', 'Juan Jose Campanella', ['Ricardo Darin', 'Soledad Villamil'], ['Drama', 'Mystery'], 'Spanish', 'R', 2009, 8.2).
+movie('I want to Eat Your Pancreas', 'Shinichiro Ushijima', ['Mahiro Takasugi', 'Tsubasa Honda'], ['Animation', 'Drama'], 'Japanese', 'PG-13', 2018, 8.6).
 movie('Assal Eswed', 'Khaled Marei', ['Ahmed Helmy', 'Edward'], ['Comedy', 'Drama'], 'Arabic', 'G', 2010, 8.0).
-movie('Sa\'eedi fil gamaa el amrekeia', 'Said Hamed', ['Mohamed Henedy', 'Ahmed El-Sakka'], ['Comedy', 'Drama'], 'Arabic', 'PG', 1998, 7.0).
+movie('Sa\'eedi fil gamaa el amrekeia', 'Said Hamed', ['Mohamed Henedy', 'Ahmed ElSakka'], ['Comedy', 'Drama'], 'Arabic', 'PG', 1998, 7.0).
 movie('El-Limby', 'Wael Ihsan', ['Mohamed Saad', 'Abla Kamel'], ['Comedy'], 'Arabic', 'PG', 2002, 6.5).
 movie('Mallaki Iskandariya', 'Sandra Nashaat', ['Ahmed Ezz','Ghadah Adel'], ['Crime', 'Drama'], 'Arabic', 'PG-13', 2005, 7.1).
-movie('Masgoon Tranzait', 'Sandra Nashaat', ['Ahmed Ezz', 'Nour El-Sherif'], ['Adventure', 'Drama'], 'Arabic', 'PG-13', 2008, 6.5).
+movie('Masgoon Tranzait', 'Sandra Nashaat', ['Ahmed Ezz', 'Nour ElSherif'], ['Adventure', 'Drama'], 'Arabic', 'PG-13', 2008, 6.5).
 movie('El-Khaliyyah', 'Tarek Alarian', ['Ahmed Ezz', 'Mohamed Mamdouh'], ['Action', 'Drama'], 'Arabic', 'PG-13', 2017, 6.3).
 movie('El-Basha Tilmeez', 'Wael Ihsan', ['Hassan Hosny','Ghadah Adel','Karim Abdel Aziz'], ['Comedy', 'Action'], 'Arabic', 'PG', 2004, 6.4).
 movie('Tattah', 'Sameh Abdulaziz', ['Mohamed Saad', 'Omar Metwally'], ['Comedy', 'Drama'], 'Arabic', 'PG', 2013, 4.4).
@@ -49,7 +49,7 @@ movie('THE BeeKeeper', 'David Ayer', ['Jason Statham', 'Jessica Alba'], ['Action
 movie('Taxi Driver', 'Martin Scorsese', ['Robert De Niro', 'Jodie Foster'], ['Drama', 'Crime'], 'English', 'R', 1976, 8.2).
 movie('Lucy', 'Luc Besson', ['Scarlett Johansson', 'Morgan Freeman','Amr Waked'], ['Action', 'Sci-Fi'], 'English', 'R', 2014, 6.4).
 movie('Cast Away', 'Robert Zemeckis', ['Tom Hanks', 'Helen Hunt'], ['Drama', 'Adventure'], 'English', 'PG-13', 2000, 7.8).
-movie('Unknown', 'Jaume Collet-Serra', ['Liam Neeson', 'Diane Kruger'], ['Action', 'Thriller'], 'English', 'PG-13', 2011, 6.8).
+movie('Unknown', 'Jaume Collet Serra', ['Liam Neeson', 'Diane Kruger'], ['Action', 'Thriller'], 'English', 'PG-13', 2011, 6.8).
 movie('Snatch', 'Guy Ritchie', ['Jason Statham', 'Brad Pitt'], ['Comedy', 'Crime'], 'English', 'R', 2000, 8.2).
 movie('Speed', 'Jan de Bont', ['Keanu Reeves', 'Sandra Bullock'], ['Action', 'Thriller'], 'English', 'R', 1994, 7.2).
 movie('The Irishman', 'Martin Scorsese', ['Robert De Niro', 'Al Pacino'], ['Biography', 'Crime'], 'English', 'R', 2019, 7.8).
@@ -156,14 +156,14 @@ likes_movie(Movie, Score) :-
 
 % Safer helper predicates
 actors_match(UserActors, MovieActors) :-
-    UserActors \= [],
-    (is_list(UserActors) -> 
+    (UserActors = [] -> fail ;
+     is_list(UserActors) -> 
         member(Actor, UserActors), member(Actor, MovieActors) ; 
         member(UserActors, MovieActors)).
 
 genre_match(UserGenre, MovieGenre) :-
-    UserGenre \= [],
-    (is_list(UserGenre) -> 
+    (UserGenre = [] -> fail ;
+     is_list(UserGenre) -> 
         member(GenreItem, UserGenre), member(GenreItem, MovieGenre) ; 
         member(UserGenre, MovieGenre)).
     
@@ -209,5 +209,34 @@ write_list([Item]) :- write(Item), !.
 write_list([Item|Rest]) :-
     write(Item), write(', '),
     write_list(Rest).
+
+
+
+% get_distinct_values(Field, Values) - Gets all distinct values for a given field
+get_distinct_values(Field, Values) :-
+    findall(Value, get_value_for_field(Field, Value), AllValues),
+    sort(AllValues, Values).  % sort removes duplicates
+
+% Helper predicate to extract a value for a specific field
+get_value_for_field(director, Director) :-
+    movie(_, Director, _, _, _, _, _, _).
+
+get_value_for_field(actor, Actor) :-
+    movie(_, _, ActorsList, _, _, _, _, _),
+    member(Actor, ActorsList).
+
+get_value_for_field(genre, Genre) :-
+    movie(_, _, _, GenresList, _, _, _, _),
+    member(Genre, GenresList).
+
+get_value_for_field(language, Language) :-
+    movie(_, _, _, _, Language, _, _, _).
+
+get_value_for_field(age_rating, AgeRating) :-
+    movie(_, _, _, _, _, AgeRating, _, _).
+
+get_value_for_field(year, Year) :-
+    movie(_, _, _, _, _, _, Year, _).
+
 
 
