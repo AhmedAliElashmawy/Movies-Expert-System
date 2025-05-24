@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
 from pyswip import Prolog
 import sys
 
+from resources import links
 
 class PreferenceGUI(QMainWindow):
     def __init__(self):
@@ -71,7 +72,7 @@ class PreferenceGUI(QMainWindow):
         # Set the background GIF to fill the window
         self.gif_label = QLabel(central_widget)
         self.gif_label.setScaledContents(True)
-        self.movie = QMovie("movie theater GIF by James Curran.gif")
+        self.movie = QMovie("resources/movie_theater.gif")
         self.gif_label.setMovie(self.movie)
         self.movie.start()
 
@@ -187,7 +188,7 @@ class PreferenceGUI(QMainWindow):
             border-bottom-right-radius: 6px;
             }
             QComboBox::down-arrow {
-            image: url(down_arrow.png);
+            image: url(resources/down_arrow.png);
             width: 12px;
             height: 12px;
             }

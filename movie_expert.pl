@@ -45,7 +45,7 @@ movie('El-Khaliyyah', 'Tarek Alarian', ['Ahmed Ezz', 'Mohamed Mamdouh'], ['Actio
 movie('El-Basha Tilmeez', 'Wael Ihsan', ['Hassan Hosny','Ghadah Adel','Karim Abdel Aziz'], ['Comedy', 'Action'], 'Arabic', 'PG', 2004, 6.4, 'Male', 110, 0).
 movie('Tattah', 'Sameh Abdulaziz', ['Mohamed Saad', 'Omar Metwally'], ['Comedy', 'Drama'], 'Arabic', 'PG', 2013, 4.4, 'Male', 115, 0).
 movie('El-Limbi 8 Giga', 'Ashraf Fayeq', ['Mohamed Saad', 'Mai Ezz Eldin'], ['Comedy', 'Drama'], 'Arabic', 'PG', 2010, 5.1, 'Male', 111, 0).
-movie('THE BeeKeeper', 'David Ayer', ['Jason Statham', 'Jessica Alba'], ['Action', 'Thriller'], 'English', 'R', 2024, 6.3, 'Male', 105, 0).
+movie('The BeeKeeper', 'David Ayer', ['Jason Statham', 'Jessica Alba'], ['Action', 'Thriller'], 'English', 'R', 2024, 6.3, 'Male', 105, 0).
 movie('Taxi Driver', 'Martin Scorsese', ['Robert De Niro', 'Jodie Foster'], ['Drama', 'Crime'], 'English', 'R', 1976, 8.2, 'Male', 114, 22).
 movie('Lucy', 'Luc Besson', ['Scarlett Johansson', 'Morgan Freeman','Amr Waked'], ['Action', 'Sci-Fi'], 'English', 'R', 2014, 6.4, 'Female', 89, 1).
 movie('Cast Away', 'Robert Zemeckis', ['Tom Hanks', 'Helen Hunt'], ['Drama', 'Adventure'], 'English', 'PG-13', 2000, 7.8, 'Male', 143, 15).
