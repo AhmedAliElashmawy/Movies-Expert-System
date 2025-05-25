@@ -356,7 +356,7 @@ class PreferenceGUI(QMainWindow):
         self.prolog.asserta(f"asked(user, min_duration, {min_duration})")  # Year input as number
         self.prolog.asserta(f"asked(user, max_duration, {max_duration})")  # Year input as number
         self.prolog.asserta(f"asked(user, awards, {awards})")  # Year input as number
-        # self.prolog.asserta(f"asked(user, mode, {mode})")  # Year input as number
+        self.prolog.asserta(f"asked(user, franchise, {mode})")  # Mode input as yes/no
 
 
 

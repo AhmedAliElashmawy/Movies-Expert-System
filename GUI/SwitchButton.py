@@ -8,12 +8,12 @@ class SwitchButton(QPushButton):
         self.setMinimumSize(60, 30)
         self.update_style()
         self.toggled.connect(self.update_style)  # update on toggle
-        self.mode = "single"
+        self.mode = "no"
 
     def update_style(self):
         if self.isChecked():
             self.setText("Franchises")
-            self.mode = "franchise"
+            self.mode = "yes"
             self.setStyleSheet("""
                 QPushButton {
                     background-color: #4CAF50;
@@ -25,7 +25,7 @@ class SwitchButton(QPushButton):
             """)
         else:
             self.setText("Movies and Series")
-            self.mode = "single"
+            self.mode = "no"
             self.setStyleSheet("""
                 QPushButton {
                     background-color: #f44336;
