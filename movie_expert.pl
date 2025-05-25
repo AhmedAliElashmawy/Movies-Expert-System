@@ -58,6 +58,80 @@ movie('Logan', 'James Mangold', ['Hugh Jackman', 'Patrick Stewart'], ['Action', 
 movie('The Adam Project', 'Shawn Levy', ['Ryan Reynolds', 'Mark Ruffalo'], ['Action', 'Adventure'], 'English', 'PG-13', 2022, 6.7, 'Male', 106, 1).
 movie('Red Notice', 'Rawson Marshall Thurber', ['Dwayne Johnson', 'Ryan Reynolds'], ['Action', 'Comedy'], 'English', 'PG-13', 2021, 6.3, 'Male', 117, 0).
 movie('6 Underground', 'Michael Bay', ['Ryan Reynolds', 'Melanie Laurent'], ['Action', 'Adventure'], 'English', 'R', 2019, 6.1, 'Male', 128, 1).
+movie('Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
+movie('Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
+movie('Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
+movie('Iron Man', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2008, 7.9, 'Male', 126, 24).
+movie('Iron Man 2', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2010, 6.9, 'Male', 124, 7).
+movie('Iron Man 3', 'Shane Black', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2013, 7.1, 'Male', 130, 20).
+movie('John Wick', 'Chad Stahelski', ['Keanu Reeves', 'Michael Nyqvist'], ['Action', 'Thriller'], 'English', 'R', 2014, 7.5, 'Male', 101, 5).
+movie('John Wick: Chapter 2', 'Chad Stahelski', ['Keanu Reeves', 'Riccardo Scamarcio'], ['Action', 'Thriller'], 'English', 'R', 2017, 7.4, 'Male', 122, 4).
+movie('John Wick: Chapter 3 - Parabellum', 'Chad Stahelski', ['Keanu Reeves', 'Halle Berry'], ['Action', 'Thriller'], 'English', 'R', 2019, 7.4, 'Male', 130, 18).
+movie('John Wick: Chapter 4', 'Chad Stahelski', ['Keanu Reeves', 'Donnie Yen'], ['Action', 'Thriller'], 'English', 'R', 2023, 7.6, 'Male', 169, 38).
+movie('Batman Begins', 'Christopher Nolan', ['Christian Bale', 'Michael Caine'], ['Action', 'Adventure'], 'English', 'PG-13', 2005, 8.2, 'Male', 140, 15).
+movie('The Dark Knight', 'Christopher Nolan', ['Christian Bale', 'Heath Ledger'], ['Action', 'Crime'], 'English', 'PG-13', 2008, 9.0, 'Male', 152, 164).
+movie('The Dark Knight Rises', 'Christopher Nolan', ['Christian Bale', 'Tom Hardy'], ['Action', 'Adventure'], 'English', 'PG-13', 2012, 8.4, 'Male', 164, 45).
+movie('The Hangover', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2009, 7.7, 'Male', 100, 13).
+movie('The Hangover Part II', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2011, 6.5, 'Male', 102, 5).
+movie('The Hangover Part III', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2013, 5.8, 'Male', 100, 2).
+
+% sequel_to(Sequel, Predecessor) - Represents that a movie is a sequel to another
+:- dynamic(sequel_to/2).
+sequel_to('Lord of the Rings: The Two Towers', 'Lord of the Rings: The Fellowship of the Ring').
+sequel_to('Lord of the Rings: The Return of the King', 'Lord of the Rings: The Two Towers').
+sequel_to('Iron Man 2', 'Iron Man').
+sequel_to('Iron Man 3', 'Iron Man 2').
+sequel_to('John Wick: Chapter 2', 'John Wick').
+sequel_to('John Wick: Chapter 3 - Parabellum', 'John Wick: Chapter 2').
+sequel_to('John Wick: Chapter 4', 'John Wick: Chapter 3 - Parabellum').
+sequel_to('The Dark Knight', 'Batman Begins').
+sequel_to('The Dark Knight Rises', 'The Dark Knight').
+sequel_to('The Hangover Part II', 'The Hangover').
+sequel_to('The Hangover Part III', 'The Hangover Part II').
+
+is_sequel_of(Movie, Predecessor) :-
+    sequel_to(Movie, Predecessor).
+
+is_predecessor_of(Movie, Sequel) :-
+    sequel_to(Sequel, Movie).
+
+in_same_franchise(Movie1, Movie2) :-
+    Movie1 \= Movie2,
+    (franchise_connection(Movie1, Movie2) ; franchise_connection(Movie2, Movie1)).
+
+franchise_connection(Movie1, Movie2) :-
+    sequel_to(Movie1, Movie2).
+franchise_connection(Movie1, Movie2) :-
+    sequel_to(Movie1, Intermediate),
+    franchise_connection(Intermediate, Movie2).
+
+get_franchise_movies(Movie, FranchiseMovies) :-
+    findall(OtherMovie, in_same_franchise(Movie, OtherMovie), FranchiseMovies).
+
+write_list([]) :- !.
+write_list([Item]) :- write(Item), !.
+write_list([Item|Rest]) :-
+    write(Item), write(', '),
+    write_list(Rest).
+
+sort_franchise_movies(Movie, FranchiseMovies, SortedFranchise) :-
+    % Finding the first movie in the franchise (with no predecessors)
+    findall(M, (member(M, [Movie|FranchiseMovies]), \+ (member(X, [Movie|FranchiseMovies]), is_predecessor_of(X, M))), [FirstMovie|_]),
+    build_franchise_order(FirstMovie, [Movie|FranchiseMovies], [], SortedFranchise).
+
+build_franchise_order(Current, MovieList, Acc, Result) :-
+    select(Current, MovieList, RemainingMovies),
+    NewAcc = [Current|Acc],
+    (member(Next, RemainingMovies), is_predecessor_of(Current, Next) ->
+        build_franchise_order(Next, RemainingMovies, NewAcc, Result) ;
+        (RemainingMovies = [] -> 
+            reverse(NewAcc, Result) ;
+            % If there are remaining movies but no direct sequel found,
+            % we reverse what we have so far
+            reverse(NewAcc, PartResult),
+            append(PartResult, RemainingMovies, Result)
+        )
+    ).
 
 % --- Dynamic storage for user preferences ---
 :- dynamic(asked/3).
@@ -103,6 +177,11 @@ ask_pref(imdb_rate, IMDBRate) :-
         write('Invalid rating. Using 7.0 as default.'), nl, IMDBRate = 7.0),
     assert(asked(user, imdb_rate, IMDBRate)).
 
+ask_pref(franchise, Franchise) :-
+    write('Are you interested in film franchises? (yes/no) '),
+    read(Franchise),
+    assert(asked(user, franchise, Franchise)).
+
 % --- Rules ---
 ask() :-
     ask_pref(director, _),
@@ -111,7 +190,8 @@ ask() :-
     ask_pref(language, _),
     ask_pref(age_rating, _),
     ask_pref(year, _),
-    ask_pref(imdb_rate, _).
+    ask_pref(imdb_rate, _),
+    ask_pref(franchise, _).
 
 % use partial matches with a scoring system and handle skipped attributes
 likes_movie(Movie, Score) :-
@@ -127,6 +207,16 @@ likes_movie(Movie, Score) :-
     (asked(user, min_duration, UserMinDuration) -> true ; UserMinDuration = 0),
     (asked(user, max_duration, UserMaxDuration) -> true ; UserMaxDuration = 999),
     (asked(user, awards, UserAwards) -> true ; UserAwards = 0),
+    (asked(user, franchise, UserFranchise) -> true ; UserFranchise = 'no'),
+
+    % Calculate franchise score
+    (UserFranchise = 'yes' ->
+        (get_franchise_movies(Movie, FranchiseMovies),
+        length(FranchiseMovies, FranchiseSize),
+        (FranchiseSize > 0 -> FranchiseScore = 3 ; FranchiseScore = -7)) ;
+        (get_franchise_movies(Movie, FranchiseMovies),
+        length(FranchiseMovies, FranchiseSize),
+        (FranchiseSize > 0 -> FranchiseScore = -7 ; FranchiseScore = 1))),
 
     (UserDirector == '' -> DirectorScore = 1 ; 
      UserDirector == Director -> DirectorScore = 1 ; 
@@ -166,7 +256,7 @@ likes_movie(Movie, Score) :-
      AwardsScore = 0),
 
     Score is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore 
-           + IMDBScore + LeadGenderScore + DurationScore + AwardsScore,
+           + IMDBScore + LeadGenderScore + DurationScore + AwardsScore + FranchiseScore,
     Score >= 5. % Minimum score to recommend a movie
 
 % Safer helper predicates
@@ -264,5 +354,53 @@ get_value_for_field(duration, Duration) :-
 
 get_value_for_field(awards, Awards) :-
     movie(_, _, _, _, _, _, _, _, _, _, Awards).
+
+% Add these predicates to explain franchise connections and recommend full franchises
+explain_franchise(Movie) :-
+    get_franchise_movies(Movie, FranchiseMovies),
+    (FranchiseMovies = [] -> 
+        write('This movie is not part of a franchise.'), nl ;
+        write('This movie belongs to a franchise with the following films:'), nl,
+        write('- '), write(Movie), write(' (current selection)'), nl,
+        write_franchise_movies(FranchiseMovies, Movie)
+    ).
+
+write_franchise_movies([], _) :- !.
+write_franchise_movies([Movie|Rest], CurrentMovie) :-
+    Movie \= CurrentMovie,
+    write('- '), write(Movie), nl,
+    write_franchise_movies(Rest, CurrentMovie).
+
+recommend_franchise(Movie) :-
+    get_franchise_movies(Movie, FranchiseMovies),
+    (FranchiseMovies = [] -> 
+        write('No franchise found for this movie.'), nl ;
+        write('Here is the recommended watch order for this franchise:'), nl,
+        sort_franchise_movies(Movie, FranchiseMovies, SortedFranchise),
+        write_sorted_franchise(SortedFranchise)
+    ).
+
+sort_franchise_movies(Movie, FranchiseMovies, SortedFranchise) :-
+    % Finding the first movie in the franchise (with no predecessors)
+    findall(M, (member(M, [Movie|FranchiseMovies]), \+ (member(X, [Movie|FranchiseMovies]), is_predecessor_of(X, M))), [FirstMovie|_]),
+    build_franchise_order(FirstMovie, [Movie|FranchiseMovies], [], SortedFranchise).
+
+build_franchise_order(Current, MovieList, Acc, Result) :-
+    select(Current, MovieList, RemainingMovies),
+    NewAcc = [Current|Acc],
+    (member(Next, RemainingMovies), is_predecessor_of(Current, Next) ->
+        build_franchise_order(Next, RemainingMovies, NewAcc, Result) ;
+        (RemainingMovies = [] -> 
+            reverse(NewAcc, Result) ;
+            reverse(NewAcc, PartialResult),
+            build_franchise_order(RemainingMovies, [], PartialResult, Result)
+        )
+    ).
+build_franchise_order([], Result, Result).
+
+write_sorted_franchise([]) :- !.
+write_sorted_franchise([Movie|Rest]) :-
+    write('- '), write(Movie), nl,
+    write_sorted_franchise(Rest).
 
 
