@@ -58,36 +58,36 @@ movie('Logan', 'James Mangold', ['Hugh Jackman', 'Patrick Stewart'], ['Action', 
 movie('The Adam Project', 'Shawn Levy', ['Ryan Reynolds', 'Mark Ruffalo'], ['Action', 'Adventure'], 'English', 'PG-13', 2022, 6.7, 'Male', 106, 1).
 movie('Red Notice', 'Rawson Marshall Thurber', ['Dwayne Johnson', 'Ryan Reynolds'], ['Action', 'Comedy'], 'English', 'PG-13', 2021, 6.3, 'Male', 117, 0).
 movie('6 Underground', 'Michael Bay', ['Ryan Reynolds', 'Melanie Laurent'], ['Action', 'Adventure'], 'English', 'R', 2019, 6.1, 'Male', 128, 1).
-movie('Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.8, 'Male', 178, 93).
-movie('Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 37).
-movie('Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 8.9, 'Male', 201, 377).
-movie('Iron Man', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2008, 7.9, 'Male', 126, 21).
-movie('Iron Man 2', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2010, 7.0, 'Male', 124, 12).
-movie('Iron Man 3', 'Shane Black', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2013, 7.2, 'Male', 130, 19).
-movie('John Wick', 'Chad Stahelski', ['Keanu Reeves', 'Michael Nyqvist'], ['Action', 'Thriller'], 'English', 'R', 2014, 7.4, 'Male', 101, 5).
-movie('John Wick: Chapter 2', 'Chad Stahelski', ['Keanu Reeves', 'Riccardo Scamarcio'], ['Action', 'Thriller'], 'English', 'R', 2017, 7.5, 'Male', 122, 0).
-movie('John Wick: Chapter 3 - Parabellum', 'Chad Stahelski', ['Keanu Reeves', 'Halle Berry'], ['Action', 'Thriller'], 'English', 'R', 2019, 7.4, 'Male', 130, 0).
-movie('John Wick: Chapter 4', 'Chad Stahelski', ['Keanu Reeves', 'Donnie Yen'], ['Action', 'Thriller'], 'English', 'R', 2023, 7.9, 'Male', 169, 0).
-movie('Batman Begins', 'Christopher Nolan', ['Christian Bale', 'Michael Caine'], ['Action', 'Adventure'], 'English', 'PG-13', 2005, 8.2, 'Male', 140, 13).
-movie('The Dark Knight', 'Christopher Nolan', ['Christian Bale', 'Heath Ledger'], ['Action', 'Crime'], 'English', 'PG-13', 2008, 9.0, 'Male', 152, 159).
-movie('The Dark Knight Rises', 'Christopher Nolan', ['Christian Bale', 'Tom Hardy'], ['Action', 'Adventure'], 'English', 'PG-13', 2012, 8.4, 'Male', 165, 38).
-movie('The Hangover', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2009, 7.7, 'Male', 100, 14).
-movie('The Hangover Part II', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2011, 6.5, 'Male', 102, 3).
-movie('The Hangover Part III', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2013, 5.8, 'Male', 100, 0).
+movie('Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
+movie('Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
+movie('Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
+movie('Iron Man', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2008, 7.9, 'Male', 126, 24).
+movie('Iron Man 2', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2010, 6.9, 'Male', 124, 7).
+movie('Iron Man 3', 'Shane Black', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2013, 7.1, 'Male', 130, 20).
+movie('John Wick', 'Chad Stahelski', ['Keanu Reeves', 'Michael Nyqvist'], ['Action', 'Thriller'], 'English', 'R', 2014, 7.5, 'Male', 101, 5).
+movie('John Wick: Chapter 2', 'Chad Stahelski', ['Keanu Reeves', 'Riccardo Scamarcio'], ['Action', 'Thriller'], 'English', 'R', 2017, 7.4, 'Male', 122, 4).
+movie('John Wick: Chapter 3 - Parabellum', 'Chad Stahelski', ['Keanu Reeves', 'Halle Berry'], ['Action', 'Thriller'], 'English', 'R', 2019, 7.4, 'Male', 130, 18).
+movie('John Wick: Chapter 4', 'Chad Stahelski', ['Keanu Reeves', 'Donnie Yen'], ['Action', 'Thriller'], 'English', 'R', 2023, 7.6, 'Male', 169, 38).
+movie('Batman Begins', 'Christopher Nolan', ['Christian Bale', 'Michael Caine'], ['Action', 'Adventure'], 'English', 'PG-13', 2005, 8.2, 'Male', 140, 15).
+movie('The Dark Knight', 'Christopher Nolan', ['Christian Bale', 'Heath Ledger'], ['Action', 'Crime'], 'English', 'PG-13', 2008, 9.0, 'Male', 152, 164).
+movie('The Dark Knight Rises', 'Christopher Nolan', ['Christian Bale', 'Tom Hardy'], ['Action', 'Adventure'], 'English', 'PG-13', 2012, 8.4, 'Male', 164, 45).
+movie('The Hangover', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2009, 7.7, 'Male', 100, 13).
+movie('The Hangover Part II', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2011, 6.5, 'Male', 102, 5).
+movie('The Hangover Part III', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], ['Comedy'], 'English', 'R', 2013, 5.8, 'Male', 100, 2).
 
 % sequel_to(Sequel, Predecessor) - Represents that a movie is a sequel to another
 :- dynamic(sequel_to/2).
-sequel_to('Lord of the Rings: The Fellowship of the Ring', 'Lord of the Rings: The Two Towers').
-sequel_to('Lord of the Rings: The Two Towers', 'Lord of the Rings: The Return of the King').
-sequel_to('Iron Man', 'Iron Man 2').
-sequel_to('Iron Man 2', 'Iron Man 3').
-sequel_to('John Wick', 'John Wick: Chapter 2').
-sequel_to('John Wick: Chapter 2', 'John Wick: Chapter 3 - Parabellum').
-sequel_to('John Wick: Chapter 3 - Parabellum', 'John Wick: Chapter 4').
-sequel_to('Batman Begins', 'The Dark Knight').
-sequel_to('The Dark Knight', 'The Dark Knight Rises').
-sequel_to('The Hangover', 'The Hangover Part II').
-sequel_to('The Hangover Part II', 'The Hangover Part III').
+sequel_to('Lord of the Rings: The Two Towers', 'Lord of the Rings: The Fellowship of the Ring').
+sequel_to('Lord of the Rings: The Return of the King', 'Lord of the Rings: The Two Towers').
+sequel_to('Iron Man 2', 'Iron Man').
+sequel_to('Iron Man 3', 'Iron Man 2').
+sequel_to('John Wick: Chapter 2', 'John Wick').
+sequel_to('John Wick: Chapter 3 - Parabellum', 'John Wick: Chapter 2').
+sequel_to('John Wick: Chapter 4', 'John Wick: Chapter 3 - Parabellum').
+sequel_to('The Dark Knight', 'Batman Begins').
+sequel_to('The Dark Knight Rises', 'The Dark Knight').
+sequel_to('The Hangover Part II', 'The Hangover').
+sequel_to('The Hangover Part III', 'The Hangover Part II').
 
 is_sequel_of(Movie, Predecessor) :-
     sequel_to(Movie, Predecessor).
