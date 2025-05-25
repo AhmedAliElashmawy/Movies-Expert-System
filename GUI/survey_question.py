@@ -1,19 +1,26 @@
 import random
 
+from .MultiDropdown import MultiSelectDropdown
+from .SwitchButton import SwitchButton
+
+from .results_gui import ResultsGUI
+
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QLabel, QMessageBox, QVBoxLayout, QMainWindow,
-    QSizePolicy, QHBoxLayout, QButtonGroup, QComboBox
+    QSizePolicy, QHBoxLayout, QButtonGroup, QComboBox, QListWidgetItem, QCheckBox, QListWidget
 )
 from pyswip import Prolog
 import sys
-
-from resources import links
-
 class PreferenceGUI(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.genres_dropdown = None
+        self.actors_dropdown = None
+        self.selected_actors = None
+        self.actor_list = None
+        self.result_gui = None
         self.prolog = Prolog()
         self.prolog.consult('movie_expert.pl')
         self.imdb_rating_buttons = None
@@ -21,10 +28,8 @@ class PreferenceGUI(QMainWindow):
         self.submit_button = None
         self.year_input = None
         self.age_rating_input = None
-        self.genre_input = None
         self.language_input = None
         self.imdb_rate_input = None
-        self.actors_input = None
         self.director_input = None
         self.layout = None
         self.movie = None
@@ -33,7 +38,9 @@ class PreferenceGUI(QMainWindow):
         self.gender_input = None
         self.duration_input = None
         self.awards_input = None
+        self.switch_button = None
         self.imdb_rating = None
+
 
         # Fetch distinct values from Prolog
         self.directors = self.get_prolog_values('director')
@@ -45,8 +52,6 @@ class PreferenceGUI(QMainWindow):
         self.gender = self.get_prolog_values('lead_gender')
         self.duration = ["1h-1.5h", "1.5h-2h", "2h-3h", ">3h"]
         self.awards = self.get_prolog_values('awards')
-
-
         self.setMaximumSize(800, 1000)
 
         # Initialize the UI
@@ -97,15 +102,11 @@ class PreferenceGUI(QMainWindow):
         for director in self.directors:
             self.director_input.addItem(director, director)
 
-        self.actors_input = QComboBox()
-        self.actors_input.addItem("", "")  # Empty option to skip
-        for actor in self.actors:
-            self.actors_input.addItem(actor, actor)
+        self.actors_dropdown = MultiSelectDropdown(items=self.actors, placeholder="Select actors")
+        self.layout.addWidget(self.actors_dropdown)
 
-        self.genre_input = QComboBox()
-        self.genre_input.addItem("", "")  # Empty option to skip
-        for genre in self.genres:
-            self.genre_input.addItem(genre, genre)
+        self.genres_dropdown = MultiSelectDropdown(items=self.genres, placeholder="Select genres")
+        self.layout.addWidget(self.genres_dropdown)
 
         self.language_input = QComboBox()
         self.language_input.addItem("", "")  # Empty option to skip
@@ -136,6 +137,8 @@ class PreferenceGUI(QMainWindow):
         self.year_input.setPlaceholderText("2000")
         self.year_input.setMaxLength(4)
 
+        self.switch_button = SwitchButton()
+
         # IMDB rating buttons layout
         self.imdb_rating_layout = QHBoxLayout()
         self.imdb_rating_buttons = QButtonGroup(self)
@@ -165,7 +168,6 @@ class PreferenceGUI(QMainWindow):
                 self.set_imdb_rating(7)
             self.imdb_rating_buttons.buttonClicked[int].connect(self.set_imdb_rating)
 
-        # Common style for all dropdowns
         dropdown_style = """
             QComboBox {
             background-color: rgba(255, 255, 255, 0.85);
@@ -219,8 +221,6 @@ class PreferenceGUI(QMainWindow):
         # Apply style to each dropdown
         self.gender_input.setStyleSheet(dropdown_style)
         self.director_input.setStyleSheet(dropdown_style)
-        self.actors_input.setStyleSheet(dropdown_style)
-        self.genre_input.setStyleSheet(dropdown_style)
         self.language_input.setStyleSheet(dropdown_style)
         self.age_rating_input.setStyleSheet(dropdown_style)
         self.duration_input.setStyleSheet(dropdown_style)
@@ -231,13 +231,14 @@ class PreferenceGUI(QMainWindow):
         # Add form inputs to the layout
         self.layout.addRow("Movie Viewership by Gender:", self.gender_input)
         self.layout.addRow("Favourite Director:", self.director_input)
-        self.layout.addRow("Favourite Actor:", self.actors_input)
-        self.layout.addRow("Favourite Genre:", self.genre_input)
+        self.layout.addRow("Favourite Actor:", self.actors_dropdown)
+        self.layout.addRow("Favourite Genre:", self.genres_dropdown)
         self.layout.addRow("Preferred Language:", self.language_input)
         self.layout.addRow("Preferred Age Rating:", self.age_rating_input)
         self.layout.addRow("Preferred Year:", self.year_input)
         self.layout.addRow("Duration:", self.duration_input)
         self.layout.addRow("Number of Awards:", self.awards_input)
+        self.layout.addRow("Search for:", self.switch_button)
 
         # self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rate_input)
         self.layout.addRow("Minimum IMDB Rating (1-10):", self.imdb_rating_layout)
@@ -274,8 +275,8 @@ class PreferenceGUI(QMainWindow):
     def submit_preferences(self):
         gender = self.gender_input.currentData()
         director = self.director_input.currentData()
-        actor = self.actors_input.currentData()  # Single actor from dropdown
-        genre = self.genre_input.currentData()   # Single genre from dropdown
+        actor = self.actors_dropdown.get_selected_items()  # Single actor from dropdown
+        genre = self.genres_dropdown.get_selected_items()  # Single genre from dropdown
         language = self.language_input.currentData()
         age_rating = self.age_rating_input.currentData()
         year = self.year_input.text()
@@ -283,6 +284,7 @@ class PreferenceGUI(QMainWindow):
         min_duration = 60
         max_duration = 300
         awards = self.awards_input.currentData()
+        mode = self.switch_button.get_mode()
 
 
         # Handle empty selections
@@ -294,17 +296,15 @@ class PreferenceGUI(QMainWindow):
             director = ""
 
         if not actor:
-            random_actor = self.actors[random.randint(0, len(self.actors) - 1)]
-            actors_list = f"['{random_actor}']"
+            actors_list = ['']
         else:
-            actors_list = f"['{actor}']"
+            actors_list = actor
 
         # For genres
         if not genre:
-            random_genre = self.genres[random.randint(0, len(self.genres) - 1)]
-            genres_list = f"['{random_genre}']"
+            genres_list = ['']
         else:
-            genres_list = f"['{genre}']"
+            genres_list = genre
             
         if not language:
             language = ""
@@ -356,6 +356,8 @@ class PreferenceGUI(QMainWindow):
         self.prolog.asserta(f"asked(user, min_duration, {min_duration})")  # Year input as number
         self.prolog.asserta(f"asked(user, max_duration, {max_duration})")  # Year input as number
         self.prolog.asserta(f"asked(user, awards, {awards})")  # Year input as number
+        # self.prolog.asserta(f"asked(user, mode, {mode})")  # Year input as number
+
 
 
         # Update GUI with confirmation
@@ -377,8 +379,12 @@ class PreferenceGUI(QMainWindow):
                 score = item['Score']
                 recommendations += f"• {movie_name} (score: {score})\n"
                 print(f"Recommended Movie: {movie_name} with score: {score}")
-                
-            QMessageBox.information(self, "Recommendations", recommendations)
+
+            self.result_gui = ResultsGUI(sorted_result, self)
+            self.result_gui.show()
+            self.hide()
+
+
         else:
             # If no recommendations are found
             QMessageBox.information(self, "No Results", "No movies match your preferences.")
@@ -387,12 +393,4 @@ class PreferenceGUI(QMainWindow):
     def set_imdb_rating(self, value):
         self.imdb_rating = value
 
-def main():
-    app = QApplication(sys.argv)
-    gui = PreferenceGUI()
-    gui.show()
-    sys.exit(app.exec_())
 
-
-if __name__ == "__main__":
-    main()
