@@ -59,9 +59,9 @@ movies_with_imdb_links = {
     "Red Notice": "https://www.imdb.com/title/tt7991608/",
     "6 Underground": "https://www.imdb.com/title/tt8106534/",
 
-    "The Lord of the Rings: The Fellowship of the Ring" : "https://www.imdb.com/title/tt0120737/",
-    "The Lord of the Rings: The Two Towers" : "https://www.imdb.com/title/tt0167261/",
-    "The Lord of the Rings: The Return of the King" : "https://www.imdb.com/title/tt0167260/",
+    "The Lord of the Rings The Fellowship of the Ring" : "https://www.imdb.com/title/tt0120737/",
+    "The Lord of the Rings The Two Towers" : "https://www.imdb.com/title/tt0167261/",
+    "The Lord of the Rings The Return of the King" : "https://www.imdb.com/title/tt0167260/",
     "Iron Man" : "https://www.imdb.com/title/tt0371746/",
     "Iron Man 2" : "https://www.imdb.com/title/tt1228705/",
     "Iron Man 3" : "https://www.imdb.com/title/tt1300854/",

@@ -58,9 +58,9 @@ movie('Logan', 'James Mangold', ['Hugh Jackman', 'Patrick Stewart'], ['Action', 
 movie('The Adam Project', 'Shawn Levy', ['Ryan Reynolds', 'Mark Ruffalo'], ['Action', 'Adventure'], 'English', 'PG-13', 2022, 6.7, 'Male', 106, 1).
 movie('Red Notice', 'Rawson Marshall Thurber', ['Dwayne Johnson', 'Ryan Reynolds'], ['Action', 'Comedy'], 'English', 'PG-13', 2021, 6.3, 'Male', 117, 0).
 movie('6 Underground', 'Michael Bay', ['Ryan Reynolds', 'Melanie Laurent'], ['Action', 'Adventure'], 'English', 'R', 2019, 6.1, 'Male', 128, 1).
-movie('The Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
-movie('The Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
-movie('The Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
+movie('The Lord of the Rings The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
+movie('The Lord of the Rings The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
+movie('The Lord of the Rings The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
 movie('Iron Man', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2008, 7.9, 'Male', 126, 24).
 movie('Iron Man 2', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2010, 6.9, 'Male', 124, 7).
 movie('Iron Man 3', 'Shane Black', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2013, 7.1, 'Male', 130, 20).
@@ -77,8 +77,8 @@ movie('The Hangover Part III', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], 
 
 % sequel_to(Sequel, Predecessor) - Represents that a movie is a sequel to another
 :- dynamic(sequel_to/2).
-sequel_to('The Lord of the Rings: The Two Towers', 'The Lord of the Rings: The Fellowship of the Ring').
-sequel_to('The Lord of the Rings: The Return of the King', 'The Lord of the Rings: The Two Towers').
+sequel_to('The Lord of the Rings The Two Towers', 'The Lord of the Rings The Fellowship of the Ring').
+sequel_to('The Lord of the Rings The Return of the King', 'The Lord of the Rings The Two Towers').
 sequel_to('Iron Man 2', 'Iron Man').
 sequel_to('Iron Man 3', 'Iron Man 2').
 sequel_to('John Wick: Chapter 2', 'John Wick').
