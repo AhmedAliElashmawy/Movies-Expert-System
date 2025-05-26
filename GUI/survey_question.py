@@ -352,12 +352,11 @@ class PreferenceGUI(QMainWindow):
         self.prolog.asserta(f"asked(user, age_rating, '{age_rating}')")  # Age rating input
         self.prolog.asserta(f"asked(user, year, {year})")  # Year input as number
         self.prolog.asserta(f"asked(user, imdb_rate, {self.imdb_rating})")  # IMDb rating input as number
-        self.prolog.asserta(f"asked(user, lead_gender, {gender})")  # Year input as number
-        self.prolog.asserta(f"asked(user, min_duration, {min_duration})")  # Year input as number
-        self.prolog.asserta(f"asked(user, max_duration, {max_duration})")  # Year input as number
-        self.prolog.asserta(f"asked(user, awards, {awards})")  # Year input as number
-        self.prolog.asserta(f"asked(user, franchise, {mode})")  # Mode input as yes/no
-
+        self.prolog.asserta(f"asked(user, lead_gender, '{gender}')")  # Gender input needs quotes
+        self.prolog.asserta(f"asked(user, min_duration, {min_duration})")  # Min duration as number
+        self.prolog.asserta(f"asked(user, max_duration, {max_duration})")  # Max duration as number
+        self.prolog.asserta(f"asked(user, awards, {awards})")  # Awards as number
+        self.prolog.asserta(f"asked(user, franchise, '{mode}')")  # Mode input needs quotes
 
 
         # Update GUI with confirmation
@@ -383,6 +382,7 @@ class PreferenceGUI(QMainWindow):
             self.result_gui = ResultsGUI(sorted_result, self)
             self.result_gui.show()
             self.hide()
+            self.set_values()
 
 
         else:
@@ -392,5 +392,35 @@ class PreferenceGUI(QMainWindow):
 
     def set_imdb_rating(self, value):
         self.imdb_rating = value
+    
+    def set_values(self):
+        """Set the values for the dropdowns and inputs."""
+        self.director_input.setCurrentText('')
+        # Clear the dropdown selections (using a method that should be implemented)
+        if hasattr(self.actors_dropdown, 'clear_selection'):
+            self.actors_dropdown.clear_selection()
+        else:
+            print("Warning: MultiSelectDropdown has no clear method")
+    
+        if hasattr(self.genres_dropdown, 'clear_selection'):
+            self.genres_dropdown.clear_selection()
+        else:
+            print("Warning: MultiSelectDropdown has no clear method")
+    
+        self.language_input.setCurrentText('')
+        self.age_rating_input.setCurrentText('')
+        self.year_input.setText('')
+        self.duration_input.setCurrentText('')
+        self.awards_input.setCurrentText('')
+        self.gender_input.setCurrentText('')  # Added this missing reset
+    
+        # Reset IMDB rating if needed
+        if self.imdb_rating_buttons:
+            for button in self.imdb_rating_buttons.buttons():
+                if int(button.text()) == 7:  # Default to 7 as in init method
+                    button.setChecked(True)
+                    self.set_imdb_rating(7)
+                else:
+                    button.setChecked(False)
 
 

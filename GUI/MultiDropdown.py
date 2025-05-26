@@ -131,6 +131,21 @@ class MultiSelectDropdown(QWidget):
                 selected.append(checkbox.text())
         return selected
 
+    def clear_selection(self):
+        """Clear all selected items in the dropdown."""
+        # Uncheck all checkboxes in the list widget
+        for i in range(self.list_widget.count()):
+            checkbox = self.list_widget.itemWidget(self.list_widget.item(i))
+            if checkbox.isChecked():
+                checkbox.setChecked(False)
+        
+        # Clear the text in the line edit
+        self.line_edit.setText("")
+        
+        # If you have a separate list of selected items
+        if hasattr(self, 'selected_items'):
+            self.selected_items = []
+
     def eventFilter(self, obj, event):
         if event.type() == QEvent.Leave:
             pos = QApplication.instance().widgetAt(QCursor.pos())

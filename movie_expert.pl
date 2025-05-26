@@ -58,9 +58,9 @@ movie('Logan', 'James Mangold', ['Hugh Jackman', 'Patrick Stewart'], ['Action', 
 movie('The Adam Project', 'Shawn Levy', ['Ryan Reynolds', 'Mark Ruffalo'], ['Action', 'Adventure'], 'English', 'PG-13', 2022, 6.7, 'Male', 106, 1).
 movie('Red Notice', 'Rawson Marshall Thurber', ['Dwayne Johnson', 'Ryan Reynolds'], ['Action', 'Comedy'], 'English', 'PG-13', 2021, 6.3, 'Male', 117, 0).
 movie('6 Underground', 'Michael Bay', ['Ryan Reynolds', 'Melanie Laurent'], ['Action', 'Adventure'], 'English', 'R', 2019, 6.1, 'Male', 128, 1).
-movie('Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
-movie('Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
-movie('Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
+movie('The Lord of the Rings: The Fellowship of the Ring', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2001, 8.9, 'Male', 178, 125).
+movie('The Lord of the Rings: The Two Towers', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2002, 8.7, 'Male', 179, 132).
+movie('The Lord of the Rings: The Return of the King', 'Peter Jackson', ['Elijah Wood', 'Ian McKellen'], ['Adventure', 'Fantasy'], 'English', 'PG-13', 2003, 9, 'Male', 201, 215).
 movie('Iron Man', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2008, 7.9, 'Male', 126, 24).
 movie('Iron Man 2', 'Jon Favreau', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2010, 6.9, 'Male', 124, 7).
 movie('Iron Man 3', 'Shane Black', ['Robert Downey Jr.', 'Gwyneth Paltrow'], ['Action', 'Adventure'], 'English', 'PG-13', 2013, 7.1, 'Male', 130, 20).
@@ -77,8 +77,8 @@ movie('The Hangover Part III', 'Todd Phillips', ['Bradley Cooper', 'Ed Helms'], 
 
 % sequel_to(Sequel, Predecessor) - Represents that a movie is a sequel to another
 :- dynamic(sequel_to/2).
-sequel_to('Lord of the Rings: The Two Towers', 'Lord of the Rings: The Fellowship of the Ring').
-sequel_to('Lord of the Rings: The Return of the King', 'Lord of the Rings: The Two Towers').
+sequel_to('The Lord of the Rings: The Two Towers', 'The Lord of the Rings: The Fellowship of the Ring').
+sequel_to('The Lord of the Rings: The Return of the King', 'The Lord of the Rings: The Two Towers').
 sequel_to('Iron Man 2', 'Iron Man').
 sequel_to('Iron Man 3', 'Iron Man 2').
 sequel_to('John Wick: Chapter 2', 'John Wick').
@@ -106,7 +106,14 @@ franchise_connection(Movie1, Movie2) :-
     franchise_connection(Intermediate, Movie2).
 
 get_franchise_movies(Movie, FranchiseMovies) :-
-    findall(OtherMovie, in_same_franchise(Movie, OtherMovie), FranchiseMovies).
+    % First check if the movie exists
+    movie(Movie, _, _, _, _, _, _, _, _, _, _),
+    % Find all movies that are in the same franchise as the input movie
+    findall(OtherMovie, 
+           (movie(OtherMovie, _, _, _, _, _, _, _, _, _, _),
+            OtherMovie \= Movie,  % Ensure we're not matching the movie itself
+            in_same_franchise(Movie, OtherMovie)),  % Find movies in the same franchise
+           FranchiseMovies).
 
 write_list([]) :- !.
 write_list([Item]) :- write(Item), !.
@@ -209,15 +216,6 @@ likes_movie(Movie, Score) :-
     (asked(user, awards, UserAwards) -> true ; UserAwards = 0),
     (asked(user, franchise, UserFranchise) -> true ; UserFranchise = 'no'),
 
-    % Calculate franchise score
-    (UserFranchise = 'yes' ->
-        (get_franchise_movies(Movie, FranchiseMovies),
-        length(FranchiseMovies, FranchiseSize),
-        (FranchiseSize > 0 -> FranchiseScore = 3 ; FranchiseScore = -7)) ;
-        (get_franchise_movies(Movie, FranchiseMovies),
-        length(FranchiseMovies, FranchiseSize),
-        (FranchiseSize > 0 -> FranchiseScore = -7 ; FranchiseScore = 1))),
-
     (UserDirector == '' -> DirectorScore = 1 ; 
      UserDirector == Director -> DirectorScore = 1 ; 
      DirectorScore = 0),
@@ -255,8 +253,30 @@ likes_movie(Movie, Score) :-
     (AwardsWon >= UserAwards -> AwardsScore = 1 ;
      AwardsScore = 0),
 
+    (UserFranchise = 'yes' ->
+        (get_franchise_movies(Movie, FranchiseMovies),
+         length(FranchiseMovies, FranchiseSize),
+         (FranchiseSize > 0 -> FranchiseScore = 0 ; 
+            % Calculate penalty first
+            PenaltyValue is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore 
+              + IMDBScore + LeadGenderScore + DurationScore + AwardsScore,
+            FranchiseScore is -1 * PenaltyValue)) ;
+        (get_franchise_movies(Movie, FranchiseMovies),
+         length(FranchiseMovies, FranchiseSize),
+         (FranchiseSize > 0 -> 
+            % Calculate penalty first
+            PenaltyValue is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore 
+              + IMDBScore + LeadGenderScore + DurationScore + AwardsScore,
+            FranchiseScore is -1 * PenaltyValue ; 
+            FranchiseScore = 0))
+    ),
+
+    write('FranchiseScore: '), write(FranchiseScore), write(' (movie: '), write(Movie), write(')'), nl,
+    (FranchiseScore = 0 -> write('No franchise found for this movie.') ; true),
+
     Score is DirectorScore + ActorScore + GenreScore + LanguageScore + RatingScore + YearScore 
            + IMDBScore + LeadGenderScore + DurationScore + AwardsScore + FranchiseScore,
+
     Score >= 5. % Minimum score to recommend a movie
 
 % Safer helper predicates
